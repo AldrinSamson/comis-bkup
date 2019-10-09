@@ -1,6 +1,6 @@
 .bigButton {
   transform: scale(3);
-  margin-left : 50px;
+  //margin-left : 20px;
   margin-top: 10px;
 }
 
@@ -16,4 +16,20 @@
 
 .row , .card2 , table {
   width: 100%;
+}
+
+table {
+  width : 100%;
+  overflow-y: scroll;
+}
+
+.col-9  {
+  &.dialog {
+      max-height: 250px;
+      
+      table {
+          margin-left: 15px;
+          margin-right: 10px;
+      }
+  }    
 }

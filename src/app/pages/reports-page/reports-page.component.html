@@ -1,6 +1,51 @@
 <div class = "main-content">
-  <div class = "row">
     <mat-tab-group>
+       <mat-tab label = "Transactions">
+        <div class = "card">
+          <div class = "card-header">
+              <button mat-button>Save as PDF</button> <br>
+              <button mat-button>Save as CSV</button> 
+          </div>
+          <div class = "card-body">
+                    <table mat-table [dataSource] = "transaction" class = "mat-elevation-z8">
+
+                      <ng-container matColumnDef = "borrowerID">
+                        <th mat-header-cell *matHeaderCellDef> Borrower ID</th>
+                        <td mat-cell *matCellDef = "let transaction"> {{transaction.borrowerID}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef = "itemID">
+                        <th mat-header-cell *matHeaderCellDef> Item ID</th>
+                        <td mat-cell *matCellDef = "let transaction"> {{transaction.itemID}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef = "purpose">
+                        <th mat-header-cell *matHeaderCellDef> Purpose </th>
+                        <td mat-cell *matCellDef = "let transaction"> {{transaction.purpose}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef = "dateBorrowed">
+                        <th mat-header-cell *matHeaderCellDef> Date Borrowed</th>
+                        <td mat-cell *matCellDef = "let transaction"> {{transaction.dateBorrowed}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef = "dateReturned">
+                        <th mat-header-cell *matHeaderCellDef> Date Returned</th>
+                        <td mat-cell *matCellDef = "let transaction"> {{transaction.dateReturned}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef = "hasIncident">
+                        <th mat-header-cell *matHeaderCellDef> has Incident</th>
+                        <td mat-cell *matCellDef = "let transaction"> {{transaction.hasIncident}} </td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="displayedColumnsTransaction"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumnsTransaction;" ></tr>
+
+                    </table>
+          </div>
+        </div>
+      </mat-tab>
       <mat-tab label = "Incidents">
           <div class="card">
               <div class="card-header">  
@@ -29,12 +74,42 @@
                       </ng-container>
       
                           
-                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openEditIncident(row)"></tr>
+                      <tr mat-header-row *matHeaderRowDef="displayedColumnsIncidents"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumnsIncidents;" (click)="openEditIncident(row)"></tr>
                   </table>  
               </div>
           </div>
       </mat-tab>
+      <mat-tab label = "Audit">
+        <div class = "card">
+            <div class = "card-header">
+                <button mat-button>Save as PDF</button> <br>
+                <button mat-button>Save as CSV</button> 
+            </div>
+            <div class = "card-body">
+                <table mat-table  class = "mat-elevation-z8">
+
+                      <ng-container matColumnDef = "date">
+                        <th mat-header-cell *matHeaderCellDef> Date </th>
+                        <td mat-cell >  </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef = "actionType">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell >  </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef = "actor">
+                        <th mat-header-cell *matHeaderCellDef> User </th>
+                        <td mat-cell >  </td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="displayedColumnsAudit"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumnsAudit;" ></tr>
+
+                    </table>
+            </div>
+        </div>
+      </mat-tab>
     </mat-tab-group>
-  </div>
 </div>

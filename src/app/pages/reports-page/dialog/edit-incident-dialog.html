@@ -34,7 +34,7 @@
     <div class = "col-4">
             <mat-form-field >
                 <mat-label> Borrower Description </mat-label>
-                <textarea matInput formControlName = "borrowerDescription" value = "{{data.borrowerDescription}}" disabled> </textarea>
+                <textarea matInput formControlName = "borrowerDescription" value = "{{data.borrowerDescription}}" > </textarea>
             </mat-form-field>
         </div>
     <div class = "col-4">
@@ -48,6 +48,7 @@
 </div>
 </div>
 <div mat-dialog-actions>
+    <button mat-button  >Save as PDF</button>
     <button mat-button (click) = "submitEditIncidentForm()" >Edit</button>
     <button mat-button (click)="onNoClick()">Back</button> 
 </div>

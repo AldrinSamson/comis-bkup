@@ -15,7 +15,15 @@ import { Incident } from '../../core/models/Incident';
 export class ReportsPageComponent implements OnInit {
     incident : any;
     incidentRaw : Incident[] = [];
-    displayedColumns : string[] = ['date' , 'bID' ,'bName', 'itemID'];
+    displayedColumnsIncidents : string[] = ['date' , 'bID' ,'bName', 'itemID'];
+
+    transaction : any;
+    transactionRaw : Transaction [] = [];
+    displayedColumnsTransaction : string[] = ['borrowerID' , 'itemID' , 'purpose' , 'dateBorrowed' , 'dateReturned' , 'hasIncident'];
+
+    audit : any; 
+    auditRaw : any;
+    displayedColumnsAudit : string[] = ['date' , 'actionType' , 'actor'];
   
     constructor(
       public DS: DataService,
@@ -24,6 +32,7 @@ export class ReportsPageComponent implements OnInit {
   
     ngOnInit() {
       this.readIncident();
+      this.readTransaction();
     }
   
     async readIncident() {
@@ -31,6 +40,13 @@ export class ReportsPageComponent implements OnInit {
       const [res] = await Promise.all([promise]);
       this.incidentRaw = res;
       this.incident = new MatTableDataSource(this.incidentRaw);
+    }
+
+    async readTransaction() {
+      const promise = this.DS.readPromise(Transaction);
+      const [res] = await Promise.all([promise]);
+      this.transactionRaw = res;
+      this.transaction = new MatTableDataSource(this.transactionRaw);
     }
   
     openEditIncident(row){

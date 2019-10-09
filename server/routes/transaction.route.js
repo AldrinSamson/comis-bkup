@@ -6,7 +6,7 @@ let Transcation = require('../model/transaction');
 
 //get all
 transactionRoute.route('/').get((req, res) => {
-    Transcation.find((error, data) => {
+    Transcation.find({},{},{ sort: { dateBorrowed : -1 } },(error, data) => {
       if (error) {
         return next(error)
       } else {
@@ -67,5 +67,16 @@ transactionRoute.route('/getByBorrower/id=:id').get((req, res) => {
   }
 })
 })
+//get by item 
+transactionRoute.route('/getByItem/id=:id').get((req, res) => {
+  Transcation.find({ itemID: req.params.id },{},{ sort: { dateBorrowed : -1 } }, (error, data) => {
+  if (error) {
+    return next(error)
+  } else {
+    res.json(data)
+  }
+})
+})
 // TODO CLEAR BY DATE , CLEAR ALL
 module.exports = transactionRoute;
+

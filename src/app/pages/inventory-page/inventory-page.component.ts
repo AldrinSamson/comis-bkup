@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { Inventory } from '../../core/models/Inventory';
 import { InventorySubType } from '../../core/models/InventorySubType';
 import { InventoryType } from '../../core/models/InventoryType';
@@ -6,6 +6,7 @@ import { DataService } from '../../core/services/genericCRUD/data.service'
 import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Transaction } from '../../core/models/Transaction';
 
 @Component({
     selector: 'app-inventory-page',
@@ -207,7 +208,8 @@ export class addInventoryDialog implements OnInit{
 
 @Component({
     selector : 'editInventory-dialog',
-    templateUrl : './dialog/editInventory-dialog.html'
+    templateUrl : './dialog/editInventory-dialog.html',
+    styleUrls: ['./inventory-page.component.scss'],
 })
 
 export class editInventoryDialog implements OnInit {
@@ -215,6 +217,10 @@ export class editInventoryDialog implements OnInit {
     editInventoryForm : any;
     singleInventorySource : any;
     singleInventory  = new MatTableDataSource<Inventory>(this.singleInventorySource);
+
+    iTransactionRaw: Transaction[] = [];
+    iTransaction: any;
+    displayedColumnsTransaction : string[] = ['borrowerID' , 'purpose' , 'dateBorrowed' , 'dateReturned', 'hasIncident'];
 
     ngOnInit() {
         this.readSingleInventory();
@@ -239,13 +245,25 @@ export class editInventoryDialog implements OnInit {
 
     async readSingleInventory() {
         
-        const getIDquery = 'id='+this.data.id ;
-        const type = 'get';
+        let getIDquery = 'id='+this.data.id ;
+        let type = 'get';
         const inventoryPromise = this.DS.readPromise(Inventory ,type, getIDquery);
         const [inventoryRes] = await Promise.all([inventoryPromise]);
         this.singleInventorySource = inventoryRes;
         this.data.itemID = this.singleInventorySource.itemID
         this.data.subType = this.singleInventorySource.subType
+
+        this.readItemTransactions(this.singleInventorySource.itemID);
+    }
+
+    async readItemTransactions(itemID){
+
+        let query = "id=" + itemID;
+        let type = "getByItem";
+        const promise = this.DS.readPromise(Transaction , type , query);
+        const [res] = await Promise.all([promise]);
+        this.iTransactionRaw = res;
+        this.iTransaction = new MatTableDataSource(this.iTransactionRaw);
     }
 
     submitEditInventoryForm(){
