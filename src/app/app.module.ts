@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpConfigInterceptor } from './core/services/http/interceptor.service';
 import { CrudServiceModule } from './core/services/genericCRUD/crud-service.module';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { CrudServiceModule } from './core/services/genericCRUD/crud-service.modu
         NavModule,
         HttpClientModule,
         CrudServiceModule,
+        MDBBootstrapModule,
        
     ],
     providers: [

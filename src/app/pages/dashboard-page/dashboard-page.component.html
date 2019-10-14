@@ -1,3 +1,90 @@
+<div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="card card-stats">
+                        <div class="card-header card-header-warning card-header-icon">
+                            <div class="card-icon">
+                                <i class="material-icons">unarchive</i>
+                            </div>
+                            <p class="card-category">Items Borrowed</p>
+                            <h3 class="card-title"> 20
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="card card-stats">
+                        <div class="card-header card-header-danger card-header-icon">
+                            <div class="card-icon">
+                                <i class="material-icons">broken_image</i>
+                            </div>
+                            <p class="card-category">Items with Issues</p>
+                            <h3 class="card-title">5</h3>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-info card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">receipt</i>
+                                </div>
+                                <p class="card-category">Unprocessed Incidents</p>
+                                <h3 class="card-title">0</h3>
+                            </div>
+                        </div>
+                    </div>
 
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="card card-stats">
+                        <div class="card-header card-header-info card-header-icon">
+                            <div class="card-icon">
+                                <i class="material-icons">chrome_reader_mode</i>
+                            </div>
+                            <p class="card-category">Last Time Reports Generated</p>
+                            <h3 class="card-title">8/22/2019</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="row" style = "margin-top: 70px; margin-left : 70px">
+                <div class = "col-6">
+                        <div>
+                            <h4>Frequently Borrowed</h4>
+                                <canvas mdbChart
+                                    [chartType]="chartType"
+                                    [datasets]="chartDatasetsItem"
+                                    [labels]="chartLabelsItem"
+                                    [colors]="chartColors"
+                                    [options]="chartOptions"
+                                    [legend]="true"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)"
+                                    style = "max-width: 500px;">
+                                </canvas>
+                              </div>
+                </div>
+                 <div class = "col-6">
+                        <div>
+                             <h4>Frequent Borrowers</h4>
+                                <canvas mdbChart
+                                    [chartType]="chartType"
+                                    [datasets]="chartDatasetsBorrower"
+                                    [labels]="chartLabelsBorrower"
+                                    [colors]="chartColors"
+                                    [options]="chartOptions"
+                                    [legend]="true"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)"
+                                    style = "max-width: 500px;">
+                                </canvas>
+                              </div>
+                </div>
+            
+            </div>
+        </div>
+      </div>
+      

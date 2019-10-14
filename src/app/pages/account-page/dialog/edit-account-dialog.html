@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Edit {{data.username}}'s Profile</h2>
+<div mat-dialog-content [formGroup] = "editAccountForm" >
+           
+           <mat-form-field >
+                <mat-label> Position </mat-label>
+                <mat-select formControlName = "class" required>
+                        <mat-option value="Administrator">Administrator</mat-option>
+                        <mat-option value="Staff">Staff</mat-option>
+                    </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> First Name </mat-label>
+                <input matInput formControlName = "firstName" value = {{data.firstName}} required>
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> Last Name </mat-label>
+                <input matInput formControlName = "lastName" value = {{data.lastName}} required>
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> Favorite Food? </mat-label>
+                <input matInput formControlName = "securityAnswer1" value = {{data.securityAnswer1}} required>
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> Favorite Animal? </mat-label>
+                <input matInput formControlName = "securityAnswer2" value = {{data.securityAnswer2}} required>
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> Current Password </mat-label>
+                <input matInput type="password" formControlName = "password" value = {{data.password}} required>
+            </mat-form-field>
+            <br>
+            <!-- <mat-form-field >
+                <mat-label> Confirm Password to Edit or Delete </mat-label>
+                <input matInput formControlName = "" value = {{data.}}>
+            </mat-form-field>
+            <br> -->
+            
+            
+</div>
+<div mat-dialog-actions>
+    <button mat-button color = "warn" (click) = "deleteAccount()" >Delete</button>
+    <button mat-button (click) = "submitEditAccountForm()" >Edit</button>
+    <button mat-button (click)="onNoClick()">Back</button> 
+</div>

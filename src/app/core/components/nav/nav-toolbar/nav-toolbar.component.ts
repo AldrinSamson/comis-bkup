@@ -1,5 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { Page } from '../../../services/navigation/navigation.service';
+
+import { StorageService } from '../../../services/storage/storage.service'
+import { StorageKey } from '../../../services/storage/storage.model';
+import { MatDialogRef } from '@angular/material';
+const { AUTH_TOKEN } = StorageKey;
 
 @Component({
     selector: 'app-nav-toolbar',
@@ -12,10 +17,14 @@ export class NavToolbarComponent implements OnInit {
     @Output() toggleSideNav = new EventEmitter();
     @Output() logout = new EventEmitter();
     public addToggled = false;
+    public userInfo : any;
+   
 
-    constructor() {}
+    constructor( public storage : StorageService) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.userInfo =  Object.values(this.storage.read(AUTH_TOKEN))[0];
+    }
 
     public onToggleSideNav() {
         this.toggleSideNav.emit();
@@ -24,8 +33,20 @@ export class NavToolbarComponent implements OnInit {
     public onLogout() {
         this.logout.emit();
     }
+}
 
-    addIsToggled() {
-        this.addToggled = !this.addToggled;
+@Component ({
+    selector : 'profile-dialog',
+    templateUrl : './dialog/profile-dialog.html'
+})
+
+export class profileDialog {
+
+    constructor (
+        public dialogRef: MatDialogRef<profileDialog>
+    ) {}
+
+    onNoClick(): void {
+        this.dialogRef.close();
     }
 }

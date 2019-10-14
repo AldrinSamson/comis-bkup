@@ -55,6 +55,7 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "openItem(row)" ></tr>
                   </table>
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
     </mat-tab>
@@ -113,9 +114,69 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "openItem(row)" ></tr>
                   </table>
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
      </mat-tab>
+     <mat-tab label="Multimedia">
+        <div class="card">
+            <div class="card-header">
+              <div fxLayout fxLayoutAlign="center center">
+                      <mat-form-field fxFlex="40%">
+                          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                      </mat-form-field>
+                    </div>  
+            </div>
+            <div class="card-body">
+                <table mat-table [dataSource]="multimedia" class="mat-elevation-z8">
+  
+                  <ng-container matColumnDef="itemID">
+                    <th mat-header-cell *matHeaderCellDef> Item ID </th>
+                    <td mat-cell *matCellDef="let multimedia"> {{multimedia.itemID}} </td>
+                  </ng-container>
+            
+                  <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef> Type </th>
+                    <td mat-cell *matCellDef="let multimedia"> {{multimedia.type}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="subType">
+                    <th mat-header-cell *matHeaderCellDef> Subtype </th>
+                    <td mat-cell *matCellDef="let multimedia"> {{multimedia.subType}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef> Name </th>
+                      <td mat-cell *matCellDef="let multimedia"> {{multimedia.name}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="description">
+                      <th mat-header-cell *matHeaderCellDef> Description </th>
+                      <td mat-cell *matCellDef="let multimedia"> {{multimedia.description}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="location">
+                    <th mat-header-cell *matHeaderCellDef> Location </th>
+                    <td mat-cell *matCellDef="let multimedia"> {{multimedia.location}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="condition">
+                      <th mat-header-cell *matHeaderCellDef> Condition </th>
+                      <td mat-cell *matCellDef="let multimedia"> {{multimedia.condition}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let multimedia"> {{multimedia.status}} </td>
+                </ng-container>
+  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "openItem(row)" ></tr>
+                  </table>
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </mat-tab>
   </mat-tab-group>
   </div>
   

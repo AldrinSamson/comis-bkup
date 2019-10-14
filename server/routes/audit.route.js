@@ -6,7 +6,7 @@ let Audit = require('../model/audit');
 
 //get all
 auditRoute.route('/').get((req, res) => {
-    Audit.find((error, data) => {
+    Audit.find({},{},{ sort: { date : -1 } },(error, data) => {
       if (error) {
         return next(error)
       } else {

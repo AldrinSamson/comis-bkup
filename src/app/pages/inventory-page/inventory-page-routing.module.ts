@@ -15,7 +15,7 @@ const routes: Routes = [
             import('../inventory-config-page/inventory-config-page.module').then(
                 m => m.InventoryConfigPageModule,
             ),
-        data: { title: 'Inventory Config', isChild: true },
+        data: { title: 'Inventory Configuration', isChild: true },
     },
 ];
 

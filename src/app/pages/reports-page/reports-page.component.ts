@@ -1,11 +1,13 @@
-import { Component, OnInit, Inject  } from '@angular/core';
+import { Component, OnInit, Inject , ViewChildren, QueryList } from '@angular/core';
 import { DataService } from '../../core/services/genericCRUD/data.service';
 import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators , FormControl } from '@angular/forms';
+import {MatPaginator} from '@angular/material/paginator';
 
 import { Transaction } from '../../core/models/Transaction';
 import { Incident } from '../../core/models/Incident';
+import { Audit } from 'src/app/core/models/Audit';
 
 @Component({
     selector: 'app-reports-page',
@@ -29,24 +31,34 @@ export class ReportsPageComponent implements OnInit {
       public DS: DataService,
       public dialog: MatDialog,
     ) { }
+
+    @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
   
     ngOnInit() {
       this.readIncident();
       this.readTransaction();
+      this.readAudit();
     }
   
     async readIncident() {
       const promise = this.DS.readPromise(Incident);
       const [res] = await Promise.all([promise]);
-      this.incidentRaw = res;
-      this.incident = new MatTableDataSource(this.incidentRaw);
+      this.incident = new MatTableDataSource(this.incidentRaw = res);
+      this.incident.paginator = this.paginator.toArray()[1];
     }
 
     async readTransaction() {
       const promise = this.DS.readPromise(Transaction);
       const [res] = await Promise.all([promise]);
-      this.transactionRaw = res;
-      this.transaction = new MatTableDataSource(this.transactionRaw);
+      this.transaction = new MatTableDataSource(this.transactionRaw = res);
+      this.transaction.paginator = this.paginator.toArray()[0];
+    }
+
+    async readAudit(){
+      const promise = this.DS.readPromise(Audit);
+      const [res] = await Promise.all([promise]);
+      this.audit = new MatTableDataSource(this.auditRaw = res);
+      this.audit.paginator = this.paginator.toArray()[2];
     }
   
     openEditIncident(row){

@@ -58,7 +58,19 @@ accountRoute.route('/delete/:id').delete((req, res, next) => {
         })
       }
     })
+  })
+//login
+accountRoute.route('/login/user=:user&pass=:pass').get((req, res) => {
+  Account.find({ username: req.params.user , password : req.params.pass },{},{}, (error, data) => {
+  if (error) {
+    return next(error)
+  } else {
+    res.json(data)
+  }
 })
+})
+
+
 
 
 

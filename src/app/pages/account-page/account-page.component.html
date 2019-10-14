@@ -1,0 +1,41 @@
+<div class = "row">
+    <div class = "col-10"></div>
+    <div class = "col-2">
+    </div>
+</div>
+<div class = "row">
+    <div class="card">
+        <div class="card-header">  
+          <div class = "row">
+                
+                <button mat-raised-button color="primary" (click) = "openAddAccount()">Add Account</button>
+                
+            </div>
+        </div>
+        <div class="card-body">
+              <table mat-table [dataSource]="account" class="mat-elevation-z8">
+                        
+                <ng-container matColumnDef="username">
+                    <th mat-header-cell *matHeaderCellDef> Username </th>
+                    <td mat-cell *matCellDef="let account"> {{account.username}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="class">
+                    <th mat-header-cell *matHeaderCellDef> Position </th>
+                    <td mat-cell *matCellDef="let account"> {{account.class}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let account"> {{account.firstName}} {{account.lastName}} </td>
+                </ng-container>
+
+                    
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openEditAccount(row)"></tr>
+            </table>  
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>
+ 

@@ -9,6 +9,14 @@ const routes: Routes = [
         component: DashboardPageComponent,
         data: { shouldReuse: true, key: 'dashboard' },
     },
+    {
+        path: 'account',
+        loadChildren: () =>
+            import('../account-page/account-page.module').then(
+                m => m.AccountPageModule,
+            ),
+        data: { title: 'Account Management', isChild: true },
+    },
 ];
 
 @NgModule({

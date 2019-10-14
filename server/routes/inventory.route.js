@@ -6,7 +6,7 @@ let Inventory = require('../model/inventory');
 
 //get all
 inventoryRoute.route('/').get((req, res) => {
-    Inventory.find((error, data) => {
+    Inventory.find({ },{},{ sort: { dateAdded: -1}},(error, data) => {
       if (error) {
         return next(error)
       } else {

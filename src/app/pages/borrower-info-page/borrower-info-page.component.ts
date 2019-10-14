@@ -1,8 +1,9 @@
-import { Component, OnInit, Inject  } from '@angular/core';
+import { Component, OnInit, Inject ,ViewChild } from '@angular/core';
 import { DataService } from '../../core/services/genericCRUD/data.service';
 import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
+import {MatPaginator} from '@angular/material/paginator';
 
 import { Borrower } from '../../core/models/Borrower';
 import { Transaction } from '../../core/models/Transaction';
@@ -25,6 +26,9 @@ export class BorrowerInfoPageComponent implements OnInit {
         public dialog: MatDialog,  
     ) {}
 
+    @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
+
     ngOnInit() {
         this.readBorrower();
     }
@@ -32,13 +36,13 @@ export class BorrowerInfoPageComponent implements OnInit {
     async readBorrower() {
         const promise = this.DS.readPromise(Borrower);
         const [res] = await Promise.all([promise]);
-        this.borrowerRaw = res;
-        this.borrower = new MatTableDataSource(this.borrowerRaw);
+        this.borrower = new MatTableDataSource(this.borrowerRaw = res);
+        this.borrower.paginator = this.paginator
     }
 
     applyFilter(filterValue: string) {
         this.borrower.filter = filterValue.trim().toLowerCase();
-      }
+    }
 
     openAddBorrower():void {
         const dialogConfig = new MatDialogConfig();

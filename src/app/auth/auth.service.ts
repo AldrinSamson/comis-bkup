@@ -3,6 +3,10 @@ import { CrudService } from '../core/services/http/crud.service';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from '../core/services/storage/storage.service';
 import { StorageKey } from '../core/services/storage/storage.model';
+import { Account } from '../core/models/Account';
+import { DataService } from '../core/services/genericCRUD/data.service';
+import { Audit } from '../core/models/Audit';
+
 const { AUTH_TOKEN } = StorageKey;
 
 @Injectable({
@@ -13,19 +17,36 @@ const { AUTH_TOKEN } = StorageKey;
 })
 export class AuthService extends CrudService {
     endpoint = 'auth';
-    token: string;
+    token: any;
     redirectUrl: string;
 
-    constructor(http: HttpClient, private storage: StorageService) {
+    constructor(http: HttpClient, private storage: StorageService ,  public DS: DataService,) {
         super(http);
         this.token = this.storage.read(AUTH_TOKEN) || '';
     }
 
     public async login(email: string, password: string) {
         try {
-            this.token = await this.post({ email, password });
-            this.storage.save(AUTH_TOKEN, this.token);
-            return this.redirectUrl;
+            let type = 'login';
+            let query = 'user=' + email + '&' + 'pass=' + password;
+            const promise = this.DS.readPromise(Account , type , query);
+            const [res] = await Promise.all([promise]);
+
+            if (res.length == 0) {
+                alert("Incorrect Credentials");
+            }else {
+
+                let audit = {
+                    date : new Date , 
+                    actionType : 'Login' , 
+                    actor : email 
+                }
+
+                this.token =res;
+                this.DS.createPromise(Audit , audit);
+                this.storage.save(AUTH_TOKEN, this.token);
+                return this.redirectUrl;
+            }
         } catch (error) {
             console.error('Error during login request', error);
             return Promise.reject(error);
@@ -51,7 +72,15 @@ export class AuthService extends CrudService {
     }
 
     public logout() {
+        let userInfo : any;
+        userInfo = Object.values(this.storage.read(AUTH_TOKEN))[0];
+        let audit = {
+            date : new Date , 
+            actionType : 'Logout' , 
+            actor : userInfo.username 
+        }
         this.token = '';
+        this.DS.createPromise(Audit, audit);
         this.storage.remove(AUTH_TOKEN);
     }
 

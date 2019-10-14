@@ -1,10 +1,10 @@
 <div class="login-page" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="50px">
     <div class="logo-container" fxFlexAlign="center">
-        <app-logo></app-logo>
+        <app-logo2></app-logo2>
     </div>
     <mat-card fxFlexAlign="center">
         <mat-card-title>
-            Conservatory of Music Instruments Inventory System
+            Conservatory of Music Borrowing & Inventory System
         </mat-card-title>
         <mat-card-content>
             <form (keyup.enter)="login(email, password)">
@@ -23,5 +23,11 @@
                 Login
             </button>
         </mat-card-actions>
+        <mat-card-footer>
+           <button mat-button color = "warn">Forgot Password ?</button> 
+        </mat-card-footer>
     </mat-card>
+     <div class="logo-container" fxFlexAlign="center">
+        <app-logo></app-logo>
+    </div>
 </div>

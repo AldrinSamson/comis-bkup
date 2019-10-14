@@ -1,12 +1,22 @@
-import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
-import { Inventory } from '../../core/models/Inventory';
-import { InventorySubType } from '../../core/models/InventorySubType';
-import { InventoryType } from '../../core/models/InventoryType';
-import { DataService } from '../../core/services/genericCRUD/data.service'
+import { Component, OnInit, Inject, ViewChildren , QueryList } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
+import {MatPaginator} from '@angular/material/paginator';
+
+//Service
+import { DataService } from '../../core/services/genericCRUD/data.service'
+import { StorageService } from '../../core/services/storage/storage.service';
+
+//Models
 import { Transaction } from '../../core/models/Transaction';
+import { Inventory } from '../../core/models/Inventory';
+import { InventorySubType } from '../../core/models/InventorySubType';
+import { InventoryType } from '../../core/models/InventoryType';
+import { Audit } from '../../core/models/Audit';
+import { StorageKey } from '../../core/services/storage/storage.model';
+
+const { AUTH_TOKEN } = StorageKey;
 
 @Component({
     selector: 'app-inventory-page',
@@ -16,23 +26,27 @@ import { Transaction } from '../../core/models/Transaction';
 
 export class InventoryPageComponent implements OnInit {
     
-    // inventory = new MatTableDataSource<IInventory>();
     inventory : Inventory[] = [];
     instrument : any;
     accessory : any;
     multimedia : any;
     displayedColumns: string[] = [ 'itemID' ,'type', 'subType' ,'name' , 'description' ,'location', 'condition' ];
+    userInfo : any;
     
-
+    
     ngOnInit() {
         this.readInventory();
+        this.userInfo = Object.values(this.storage.read(AUTH_TOKEN))[0];
     }
 
     constructor(
         public DS: DataService,
         public dialog: MatDialog,
+        private storage: StorageService
     ) { }
 
+    @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+    
     async readInventory() {
         const inventoryPromise = this.DS.readPromise(Inventory);
     
@@ -53,6 +67,10 @@ export class InventoryPageComponent implements OnInit {
         this.instrument = new MatTableDataSource(this.instrument);
         this.accessory = new MatTableDataSource(this.accessory);
         this.multimedia = new MatTableDataSource(this.multimedia);
+
+        this.instrument.paginator = this.paginator.toArray()[0];
+        this.accessory.paginator = this.paginator.toArray()[1];
+        this.multimedia.paginator = this.paginator.toArray()[2];
     }
 
     applyFilter(filterValue: string) {
@@ -65,7 +83,8 @@ export class InventoryPageComponent implements OnInit {
         
         const dialogConfig = new MatDialogConfig();
         dialogConfig.data = {
-            class : classs
+            class : classs,
+            user : this.userInfo.username
         };
 
         this.dialog.open(addInventoryDialog, dialogConfig).afterClosed().subscribe(result => {
@@ -84,7 +103,8 @@ export class InventoryPageComponent implements OnInit {
             name: row.name,
             description : row.description,
             condition : row.condition,
-            location : row.location
+            location : row.location,
+            user : this.userInfo.username
         };
 
         this.dialog.open(editInventoryDialog, dialogConfig).afterClosed().subscribe(result => {
@@ -155,7 +175,8 @@ export class addInventoryDialog implements OnInit{
     async submitAddInventoryForm() {
         
         if (this.addInventoryForm.valid){
-                // get Abbv
+            
+            // get Abbv
             const type = 'get';
             const getAbbv = 'class='+this.addInventoryForm.value.class+'&type='+this.addInventoryForm.value.type+'&subType='+this.addInventoryForm.value.subType;
             const promise = this.DS.readPromise(InventorySubType , type , getAbbv );
@@ -167,14 +188,14 @@ export class addInventoryDialog implements OnInit{
             const promise2 = this.DS.readPromise(Inventory , type , getNum );
             const [res2] = await Promise.all([promise2]);
             this.inventoryNum = res2;
-        
+            
+            //builder
             let newNum = 0;
             if(this.inventoryNum == null){
                 newNum = 1;
             }else{
                 newNum = this.inventoryNum.itemNum + 1;
             } 
-       
             const itemCode = this.inventoryAbbv[0].subTypeAbbv + '-' + newNum;
 
             this.addInventoryForm = this.fb.group({
@@ -190,10 +211,17 @@ export class addInventoryDialog implements OnInit{
                 status: ['OK'],
                 dateAdded : [new Date()],
                 dateEdited : [''],
-                addedBy : ['bandoy'],
+                addedBy : [this.data.user],
                 editedBy : ['']
             })
 
+            let audit = {
+                date : new Date ,
+                actionType : 'Added item ' + itemCode,
+                actor : this.data.user
+            }
+
+            this.DS.createPromise(Audit , audit);
             this.DS.createPromise(Inventory , this.addInventoryForm.value);
             this.dialogRef.close();
         }
@@ -224,6 +252,7 @@ export class editInventoryDialog implements OnInit {
 
     ngOnInit() {
         this.readSingleInventory();
+        
     }
     
     constructor(
@@ -239,7 +268,7 @@ export class editInventoryDialog implements OnInit {
                 location: [data.location],
                 condition : [data.condition],
                 dateEdited : [new Date()],
-                editedBy : ['bandoy'],
+                editedBy : [this.data.user],
             })
     }
 
@@ -267,7 +296,15 @@ export class editInventoryDialog implements OnInit {
     }
 
     submitEditInventoryForm(){
+
+        let audit = {
+            date : new Date, 
+            actionType : 'Edited item '+ this.data.itemID,
+            actor : this.data.user
+        }
+
         if (this.editInventoryForm.valid){
+            this.DS.createPromise(Audit , audit);
             this.DS.updatePromise(Inventory, this.editInventoryForm.value);
             this.dialogRef.close();
         }

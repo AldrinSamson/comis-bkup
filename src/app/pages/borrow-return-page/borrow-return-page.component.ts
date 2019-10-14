@@ -1,12 +1,23 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Inventory } from '../../core/models/Inventory';
-import { Transaction } from '../../core/models/Transaction';
-import { DataService } from '../../core/services/genericCRUD/data.service'
+import { Component, OnInit, Inject , ViewChildren , QueryList } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
+import {MatPaginator} from '@angular/material/paginator';
+
+//Service
+import { DataService } from '../../core/services/genericCRUD/data.service'
+import { StorageService } from '../../core/services/storage/storage.service';
+
+//Models
 import { Borrower } from '../../core/models/Borrower';
 import { Incident } from '../../core/models/Incident';
+import { Inventory } from '../../core/models/Inventory';
+import { Transaction } from '../../core/models/Transaction';
+import { Audit } from '../../core/models/Audit';
+import { StorageKey } from '../../core/services/storage/storage.model';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
+
+const { AUTH_TOKEN } = StorageKey;
 
 @Component({
     selector: 'app-borrow-return-page',
@@ -15,19 +26,24 @@ import { Incident } from '../../core/models/Incident';
 })
 export class BorrowReturnPageComponent implements OnInit {
 
-    
+    userInfo : any;
     inventory : Inventory[] = [];
     instrument : any;
     accessory : any;
+    multimedia : any;
     displayedColumns: string[] = [ 'itemID' ,'type', 'subType' ,'name' , 'description' ,'location', 'condition' , 'status' ];
 
     constructor(
         public DS: DataService,
         public dialog: MatDialog,
+        private storage: StorageService
     ) {}
+
+    @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
     ngOnInit() {
         this.readInventory();
+        this.userInfo = Object.values(this.storage.read(AUTH_TOKEN))[0];
     }
 
     async readInventory() {
@@ -43,9 +59,17 @@ export class BorrowReturnPageComponent implements OnInit {
         this.accessory = this.inventory.filter(function(item){
             return item.class == 'Accessory' 
         });
+        this.multimedia = this.inventory.filter(function(item){
+            return item.class == 'Multimedia' 
+        });
 
         this.instrument = new MatTableDataSource(this.instrument);
         this.accessory = new MatTableDataSource(this.accessory);
+        this.multimedia = new MatTableDataSource(this.multimedia);
+
+        this.instrument.paginator = this.paginator.toArray()[0];
+        this.accessory.paginator = this.paginator.toArray()[1];
+        this.multimedia.paginator = this.paginator.toArray()[2];
     }
 
     applyFilter(filterValue: string) {
@@ -53,9 +77,7 @@ export class BorrowReturnPageComponent implements OnInit {
         this.accessory.filter = filterValue.trim().toLowerCase();
     }
 
-    
-
-    openItem(row ) {
+    openItem(row) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.data = {
             id : row._id,
@@ -63,7 +85,8 @@ export class BorrowReturnPageComponent implements OnInit {
             subType : row.subType,
             itemID : row.itemID,
             borrowerID : '',
-            purpose: ''
+            purpose: '',
+            user : this.userInfo.username
         };
         if(row.status == 'OK'){
             this.dialog.open(borrowDialog, dialogConfig).afterClosed().subscribe(result => {
@@ -100,19 +123,29 @@ export class borrowDialog {
                 purpose : [''],
                 dateBorrowed : [new Date().toLocaleString()],
                 dateReturned : [''],
-                lentBy: ['bandoy'],
+                lentBy: [this.data.user],
                 receivedBy: [''],
                 hasIncident: ['']
             })
         }
     
     submitBorrowForm(){
+        let borrowerFormInfo : any;
+        borrowerFormInfo = this.borrowForm.value;
+
         const updateItem = {
             id: this.data.id,
             status: 'BORROWED'
         }
 
+        let audit = {
+            date : new Date ,
+            actionType : 'Lent item ' + this.data.itemID + ' to '+ borrowerFormInfo.borrowerID,
+            actor : this.data.user
+        }
+
         if (this.borrowForm.valid){
+            this.DS.createPromise(Audit , audit);
             this.DS.updatePromise(Inventory,updateItem);
             this.DS.createPromise(Transaction, this.borrowForm.value);
             this.dialogRef.close();
@@ -151,7 +184,7 @@ export class returnDialog implements OnInit {
             this.returnForm = this.fb.group({
                 id : [''],
                 dateReturned : [new Date().toLocaleString()],
-                receivedBy: ['bandoy'],
+                receivedBy: [this.data.user],
                 hasIncident: ['0']
             })
         }
@@ -178,7 +211,15 @@ export class returnDialog implements OnInit {
             id : this.data.id,
             status : 'OK'
         }
+
+        let audit = {
+            date : new Date ,
+            actionType : 'Recieved item ' + this.data.itemID ,
+            actor : this.data.user
+        }
+
         if (this.returnForm.valid){
+            this.DS.createPromise( Audit , audit);
             this.DS.updatePromise( Inventory, updateItem);
             this.DS.updatePromise( Transaction, this.returnForm.value );
             this.dialogRef.close();

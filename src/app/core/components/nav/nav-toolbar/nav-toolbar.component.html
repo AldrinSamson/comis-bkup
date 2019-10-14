@@ -6,25 +6,10 @@
         <mat-icon>arrow_back</mat-icon>
     </a>
     <div fxFlex="100%">{{activePage?.title}}</div>
-    <div><button mat-button (click) = "addIsToggled()" ><h5>Welcome Administrator Bandoy</h5></button></div> 
+    <div><button mat-button [routerLink] = "['dashboard/account']"  ><h5>Welcome {{userInfo.class}} {{userInfo.lastName}}</h5></button></div> 
     <button mat-icon-button (click)="onLogout()">
         <mat-icon>logout</mat-icon>
     </button>
 </mat-toolbar>
 
-<div class = "custom-modal" *ngIf = "addToggled">
-    <div class = "d-flex justify-content-center">
-      <div class = "custom-modal-card card">
-        <div class = "card-body">
-          <h5 class="card-title">Profile</h5>
-          Administrator <br>
-          Jan-Rhys Bandoy
-        </div>
-        <div class = "card-footer text-right">
-            <button type="button" name="button"  mat-stroked-button color="primary" routerLink = "/accounts"  (click) = "addIsToggled()">Account Mngmt</button>
-          <button type="button" name="button"  mat-stroked-button color="warn" routerLink = "/login"  (click) = "addIsToggled()">Logout</button>
-            <button type = "button"  mat-stroked-button color="black" (click) = "addIsToggled()">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
