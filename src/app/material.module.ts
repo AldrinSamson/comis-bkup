@@ -8,6 +8,7 @@ import {PortalModule} from '@angular/cdk/portal';
 import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 import {CdkStepperModule} from '@angular/cdk/stepper';
 import {CdkTableModule} from '@angular/cdk/table';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
     MatAutocompleteModule,
@@ -86,7 +87,8 @@ import {
       MatTableModule,
       FormsModule,
       ReactiveFormsModule,
-      MatPaginatorModule 
+      MatPaginatorModule,
+      FlexLayoutModule 
     ],
   
    

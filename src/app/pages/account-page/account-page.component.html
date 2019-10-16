@@ -6,11 +6,13 @@
 <div class = "row">
     <div class="card">
         <div class="card-header">  
-          <div class = "row">
+        
                 
-                <button mat-raised-button color="primary" (click) = "openAddAccount()">Add Account</button>
+                <button fxFlexAlign="center" mat-icon-button class="smallButton" color="accent" (click) = "openAddAccount()" style = "float:right;"><i class="material-icons">
+                    add
+                    </i></button>
                 
-            </div>
+            
         </div>
         <div class="card-body">
               <table mat-table [dataSource]="account" class="mat-elevation-z8">

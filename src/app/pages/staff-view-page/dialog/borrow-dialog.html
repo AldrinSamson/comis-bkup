@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Lend {{data.subType}} ({{data.itemID}})</h2>
+<div mat-dialog-content [formGroup] = "borrowForm" >
+           
+            <mat-form-field >
+                <mat-label> Borrower ID</mat-label>
+                <input matInput formControlName = "borrowerID" required>
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> Purpose </mat-label>
+                <mat-select formControlName = "purpose" required>
+                    <mat-option value="UST SO">UST SO</mat-option>
+                    <mat-option value="UST WO">UST WO</mat-option>
+                    <mat-option value="Rehearsal">Rehearsal</mat-option>
+                    <mat-option value="Others">Others</mat-option>
+                </mat-select>
+
+            </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click) = "submitBorrowForm()" >Lend</button>
+    <button mat-button (click)="onNoClick()">Back</button> 
+</div>

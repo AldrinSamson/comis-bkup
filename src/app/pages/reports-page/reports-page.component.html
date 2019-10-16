@@ -3,8 +3,8 @@
        <mat-tab label = "Transactions">
         <div class = "card">
           <div class = "card-header">
-              <button mat-button>Save as PDF</button> <br>
-              <button mat-button>Save as CSV</button> 
+              <button mat-button [swal]="['Oops!', 'This is not implemented yet :/', 'warning']" >Save as PDF</button> <br>
+              <button mat-button [swal]="['Oops!', 'This is not implemented yet :/', 'warning']" >Save as CSV</button> 
           </div>
           <div class = "card-body">
                     <table mat-table [dataSource] = "transaction" class = "mat-elevation-z8">
@@ -85,8 +85,8 @@
       <mat-tab label = "Logs">
         <div class = "card">
             <div class = "card-header">
-                <button mat-button>Save as PDF</button> <br>
-                <button mat-button>Save as CSV</button> 
+                <button mat-button [swal]="['Oops!', 'This is not implemented yet :/', 'warning']" >Save as PDF</button> <br>
+                <button mat-button [swal]="['Oops!', 'This is not implemented yet :/', 'warning']" >Save as CSV</button> 
             </div>
             <div class = "card-body">
                 <table mat-table [dataSource] = "audit" class = "mat-elevation-z8">

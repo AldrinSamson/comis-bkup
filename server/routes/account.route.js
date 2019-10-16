@@ -69,6 +69,37 @@ accountRoute.route('/login/user=:user&pass=:pass').get((req, res) => {
   }
 })
 })
+//check username
+accountRoute.route('/checkUsername/id=:id').get((req, res) => {
+  Account.findOne({ username: req.params.id },{},{}, (error, data) => {
+  if (error) {
+    return next(error)
+  } else {
+    res.json(data)
+  }
+})
+})
+//validateAnswer 
+accountRoute.route('/validateAnswer/id=:id&a1=:a1&a2=:a2').get((req, res) => {
+  Account.findOne({ username: req.params.id , securityAnswer1: req.params.a1 , securityAnswer2: req.params.a2 },{},{}, (error, data) => {
+  if (error) {
+    return next(error)
+  } else {
+    res.json(data)
+  }
+})
+})
+//newPass
+accountRoute.route('/updatePass/:id').put((req, res, next) => {
+  Account.findOneAndUpdate({username : req.params.id}, { $set: req.body },{}, (error, data) => {
+  if (error) {
+    return next(error);
+  } else {
+    res.json(data)
+  }
+})
+})
+
 
 
 

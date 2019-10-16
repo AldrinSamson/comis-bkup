@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>New Borrower</h2>
+<div mat-dialog-content >
+    <div class = "row">
+    <div class = "col-4" [formGroup] = "addBorrowerForm" >
+            <mat-form-field >
+                <mat-label> ID </mat-label>
+                <input matInput formControlName = "bID">
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> Type </mat-label>
+                <mat-select formControlName = "IDType" required>
+                        <mat-option value="Student">Student</mat-option>
+                        <mat-option value="Employee">Employee</mat-option>
+                        <mat-option value="Others">Others</mat-option>
+                    </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> First Name </mat-label>
+                <input matInput formControlName = "firstName">
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> Last Name </mat-label>
+                <input matInput formControlName = "lastName">
+            </mat-form-field>
+            <br>
+    </div> 
+    <div class = "col-8">
+        <h3>RULES & REGULATIONS</h3>
+            1. Strictly NO ID, NO BORROW Policy.<br>
+            2. Borrowed Item/s should be returned at the Borrower's Room within the same day, until 9:00 PM.<br>
+            3. The borrower/s are expected to take good care of the borrowed item/s. appropriate penalties are to be given to negligent borrower/s. <br>
+            4. To all alumni/outsiders who will borrow, kindly ask first for a faculty to represent you before borrowing.<br>
+    </div> 
+</div>    
+</div>
+<div mat-dialog-actions >
+    <button mat-button (click) = "submitAddBorrowerForm()" >I Agree to the terms and conditions</button>
+    <button mat-button (click)="onNoClick()">Back</button> 
+</div>

@@ -12,6 +12,16 @@ import { CustomRouteReuseStrategy } from './core/nav-reuse-strategy';
 import { NavGuard } from './core/nav.guard';
 
 const routes: Routes = [
+    
+    {path: 'staff-view',loadChildren: () =>
+                import('./pages/staff-view-page/staff-view-page.module').then(
+                    m => m.StaffViewPageModule,
+                ),
+            
+    },{path: 'forgot-password',loadChildren: () =>
+                import('./pages/forgot-password-page/forgot-password-page.module').then(
+                    m => m.ForgotPasswordPageModule,
+                ),},
     {
         path: 'login',
         loadChildren: () =>

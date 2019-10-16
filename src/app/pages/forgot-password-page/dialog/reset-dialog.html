@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Enter New Password:</h2>
+<div mat-dialog-content [formGroup] = "resetForm" >
+           
+            <mat-form-field >
+                <mat-label> Password </mat-label>
+                <input matInput formControlName = "password" type = "password" autocomplete="off">
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> Confirm Password </mat-label>
+                <input matInput type = "password" autocomplete="off">
+            </mat-form-field>
+            
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click) = "sumbitResetForm()" >Add</button>
+    <button mat-button (click)="onNoClick()">Back</button> 
+</div>

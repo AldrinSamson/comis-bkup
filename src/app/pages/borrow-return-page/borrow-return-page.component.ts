@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 import {MatPaginator} from '@angular/material/paginator';
+import swal from 'sweetalert2';
 
 //Service
 import { DataService } from '../../core/services/genericCRUD/data.service'
@@ -15,7 +16,6 @@ import { Inventory } from '../../core/models/Inventory';
 import { Transaction } from '../../core/models/Transaction';
 import { Audit } from '../../core/models/Audit';
 import { StorageKey } from '../../core/services/storage/storage.model';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 const { AUTH_TOKEN } = StorageKey;
 
@@ -129,7 +129,7 @@ export class borrowDialog {
             })
         }
     
-    submitBorrowForm(){
+    async submitBorrowForm(){
         let borrowerFormInfo : any;
         borrowerFormInfo = this.borrowForm.value;
 
@@ -144,13 +144,27 @@ export class borrowDialog {
             actor : this.data.user
         }
 
-        if (this.borrowForm.valid){
-            this.DS.createPromise(Audit , audit);
-            this.DS.updatePromise(Inventory,updateItem);
-            this.DS.createPromise(Transaction, this.borrowForm.value);
-            this.dialogRef.close();
-        }
-        
+        //borrwerID valdiation
+        let query = "id=" + borrowerFormInfo.borrowerID;
+        let type = "getByBorrower";
+        const promise = this.DS.readPromise(Borrower , type , query);
+        const [res] = await Promise.all([promise]);
+
+        if (!res) {
+            swal.fire({
+                title: 'Error!',
+                text: 'Student ID ' + borrowerFormInfo.borrowerID +' not found' ,
+                type: 'warning',
+                confirmButtonText: 'K.'
+              })
+        }else {
+            if (this.borrowForm.valid){
+                this.DS.createPromise(Audit , audit);
+                this.DS.updatePromise(Inventory,updateItem);
+                this.DS.createPromise(Transaction, this.borrowForm.value);
+                this.dialogRef.close();
+            }
+        } 
     }
         
     onNoClick(): void {
@@ -287,7 +301,7 @@ export class incidentDialog implements OnInit {
     ngOnInit(){
         this.readBorrower();
         this.readTransaction();
-        console.log(this.transaction);
+        //console.log(this.transaction);
         this.updateItemForm = this.fb.group({
             id : [this.data.itemObjectID],
             condition : [''],
@@ -339,6 +353,7 @@ export class incidentDialog implements OnInit {
             this.DS.updatePromise(Transaction , TransactionUpdate);
             this.DS.createPromise(Incident , this.incidentForm.value );
             this.dialogRef.close();
+            
         } 
         
     }

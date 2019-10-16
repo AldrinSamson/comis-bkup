@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Receive {{data.subType}} ({{data.itemID}})</h2>
+<div mat-dialog-content [formGroup] = "returnForm" >
+           
+                <mat-label> Borrower ID</mat-label>
+                <p>{{data.borrowerID}}</p>
+                <mat-label>Purpose</mat-label>
+                <p>{{data.purpose}}</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click) = "hasIncident()" >Incident</button>
+    <button mat-button (click) = "submitReturnForm()" >Receive</button>
+    <button mat-button (click)="onNoClick()">Back</button> 
+</div>

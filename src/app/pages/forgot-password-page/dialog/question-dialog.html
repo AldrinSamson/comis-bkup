@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Please answer these questions {{data.username}}</h2>
+<div mat-dialog-content [formGroup] = "answerForm" >
+           
+            <mat-form-field >
+                <mat-label> Favorite Food </mat-label>
+                <input matInput formControlName = "securityAnswer1" autocomplete="off">
+            </mat-form-field>
+            <br>
+            <mat-form-field >
+                <mat-label> Favorite Animal </mat-label>
+                <input matInput formControlName = "securityAnswer2" autocomplete="off">
+            </mat-form-field>
+            
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click) = "submitAnswerForm()" >Add</button>
+    <button mat-button (click)="onNoClick()">Back</button> 
+</div>

@@ -1,0 +1,232 @@
+
+        <mat-toolbar color="primary" class="mat-elevation-z6" fxLayout fxLayoutGap="16px">
+                <div><button mat-button ><h5>Welcome {{userInfo.class}} {{userInfo.lastName}}</h5></button></div> 
+                <button mat-icon-button (click)="onLogout()">
+                    <mat-icon>logout</mat-icon>
+                </button>
+        </mat-toolbar>
+    <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="Borrow & Return">
+             <mat-tab-group>
+    <mat-tab label="Instrument">
+        <div class="card">
+            <div class="card-header">
+              <div fxLayout fxLayoutAlign="center center">
+                      <mat-form-field fxFlex="40%">
+                          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                      </mat-form-field>
+                    </div>  
+            </div>
+            <div class="card-body">
+                <table mat-table [dataSource]="instrument" class="mat-elevation-z8">
+  
+                  <ng-container matColumnDef="itemID">
+                    <th mat-header-cell *matHeaderCellDef> Item ID </th>
+                    <td mat-cell *matCellDef="let instrument"> {{instrument.itemID}} </td>
+                  </ng-container>
+            
+                  <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef> Type </th>
+                    <td mat-cell *matCellDef="let instrument"> {{instrument.type}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="subType">
+                    <th mat-header-cell *matHeaderCellDef> Subtype </th>
+                    <td mat-cell *matCellDef="let instrument"> {{instrument.subType}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef> Name </th>
+                      <td mat-cell *matCellDef="let instrument"> {{instrument.name}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="description">
+                      <th mat-header-cell *matHeaderCellDef> Description </th>
+                      <td mat-cell *matCellDef="let instrument"> {{instrument.description}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="location">
+                    <th mat-header-cell *matHeaderCellDef> Location </th>
+                    <td mat-cell *matCellDef="let instrument"> {{instrument.location}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="condition">
+                      <th mat-header-cell *matHeaderCellDef> Condition </th>
+                      <td mat-cell *matCellDef="let instrument"> {{instrument.condition}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let instrument"> {{instrument.status}} </td>
+                </ng-container>
+  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "openItem(row)" ></tr>
+                  </table>
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Accesories">
+        <div class="card">
+            <div class="card-header">
+              <div fxLayout fxLayoutAlign="center center">
+                      <mat-form-field fxFlex="40%">
+                        <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+                      </mat-form-field>
+                    </div>  
+            </div>
+            <div class="card-body">
+                <table mat-table [dataSource]="accessory" class="mat-elevation-z8">
+  
+                  <ng-container matColumnDef="itemID">
+                    <th mat-header-cell *matHeaderCellDef> Item ID </th>
+                    <td mat-cell *matCellDef="let accessory"> {{accessory.itemID}} </td>
+                  </ng-container>
+            
+                  <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef> Type </th>
+                    <td mat-cell *matCellDef="let accessory"> {{accessory.type}} </td>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="subType">
+                    <th mat-header-cell *matHeaderCellDef> Subtype </th>
+                    <td mat-cell *matCellDef="let accessory"> {{accessory.subType}} </td>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef> Name </th>
+                      <td mat-cell *matCellDef="let accessory"> {{accessory.name}} </td>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="description">
+                      <th mat-header-cell *matHeaderCellDef> Description </th>
+                      <td mat-cell *matCellDef="let accessory"> {{accessory.description}} </td>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="location">
+                    <th mat-header-cell *matHeaderCellDef> Location </th>
+                    <td mat-cell *matCellDef="let accessory"> {{accessory.location}} </td>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="condition">
+                      <th mat-header-cell *matHeaderCellDef> Condition </th>
+                      <td mat-cell *matCellDef="let accessory"> {{accessory.condition}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let accessory"> {{accessory.status}} </td>
+                </ng-container>
+  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "openItem(row)" ></tr>
+                  </table>
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+     </mat-tab>
+     <mat-tab label="Multimedia">
+        <div class="card">
+            <div class="card-header">
+              <div fxLayout fxLayoutAlign="center center">
+                      <mat-form-field fxFlex="40%">
+                          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                      </mat-form-field>
+                    </div>  
+            </div>
+            <div class="card-body">
+                <table mat-table [dataSource]="multimedia" class="mat-elevation-z8">
+  
+                  <ng-container matColumnDef="itemID">
+                    <th mat-header-cell *matHeaderCellDef> Item ID </th>
+                    <td mat-cell *matCellDef="let multimedia"> {{multimedia.itemID}} </td>
+                  </ng-container>
+            
+                  <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef> Type </th>
+                    <td mat-cell *matCellDef="let multimedia"> {{multimedia.type}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="subType">
+                    <th mat-header-cell *matHeaderCellDef> Subtype </th>
+                    <td mat-cell *matCellDef="let multimedia"> {{multimedia.subType}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef> Name </th>
+                      <td mat-cell *matCellDef="let multimedia"> {{multimedia.name}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="description">
+                      <th mat-header-cell *matHeaderCellDef> Description </th>
+                      <td mat-cell *matCellDef="let multimedia"> {{multimedia.description}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="location">
+                    <th mat-header-cell *matHeaderCellDef> Location </th>
+                    <td mat-cell *matCellDef="let multimedia"> {{multimedia.location}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="condition">
+                      <th mat-header-cell *matHeaderCellDef> Condition </th>
+                      <td mat-cell *matCellDef="let multimedia"> {{multimedia.condition}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let multimedia"> {{multimedia.status}} </td>
+                </ng-container>
+  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "openItem(row)" ></tr>
+                  </table>
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </mat-tab>
+  </mat-tab-group>
+        </mat-tab>
+        <mat-tab label="Borrower Info">
+            <div class="card">
+                <div class="card-header">  
+                  <div class = "row">
+                      <div class = "col-10">
+                          <mat-form-field >
+                              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                          </mat-form-field>
+                      </div>
+                      <div class = "col-2">   
+                        <button mat-icon-button class="smallButton" color="accent" (click) = "openAddBorrower()"><i class="material-icons">
+                            add
+                            </i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                      <table mat-table [dataSource]="borrower" class="mat-elevation-z8">
+                                
+                        <ng-container matColumnDef="bID">
+                            <th mat-header-cell *matHeaderCellDef> ID </th>
+                            <td mat-cell *matCellDef="let borrower"> {{borrower.bID}} </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="IDType">
+                            <th mat-header-cell *matHeaderCellDef> Type </th>
+                            <td mat-cell *matCellDef="let borrower"> {{borrower.IDType}} </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> Name </th>
+                            <td mat-cell *matCellDef="let borrower"> {{borrower.firstName}} {{borrower.lastName}} </td>
+                        </ng-container>
+        
+                            
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsBorrower"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsBorrower;" (click)="openEditBorrower(row)"></tr>
+                    </table>  
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </mat-tab>
+      </mat-tab-group>

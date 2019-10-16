@@ -6,6 +6,8 @@ import { StorageKey } from '../core/services/storage/storage.model';
 import { Account } from '../core/models/Account';
 import { DataService } from '../core/services/genericCRUD/data.service';
 import { Audit } from '../core/models/Audit';
+import swal from 'sweetalert2';
+
 
 const { AUTH_TOKEN } = StorageKey;
 
@@ -33,7 +35,12 @@ export class AuthService extends CrudService {
             const [res] = await Promise.all([promise]);
 
             if (res.length == 0) {
-                alert("Incorrect Credentials");
+                swal.fire({
+                    title: 'Error!',
+                    text: 'Incorrect Credentials',
+                    type: 'error',
+                    confirmButtonText: 'K.'
+                  })
             }else {
 
                 let audit = {
@@ -85,6 +92,12 @@ export class AuthService extends CrudService {
     }
 
     public isLogged(): boolean {
-        return this.token.length > 0;
+        let userInfo : any;
+        let isLogged = new Boolean(false);
+        userInfo = Object.values(this.storage.read(AUTH_TOKEN))[0];
+        if (userInfo.class == "Administrator"){
+            isLogged = true;
+        }
+        return userInfo.class == "Administrator";
     }
 }

@@ -9,6 +9,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpConfigInterceptor } from './core/services/http/interceptor.service';
 import { CrudServiceModule } from './core/services/genericCRUD/crud-service.module';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
         HttpClientModule,
         CrudServiceModule,
         MDBBootstrapModule,
+        SweetAlert2Module.forRoot()
        
     ],
     providers: [

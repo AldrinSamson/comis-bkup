@@ -48,7 +48,7 @@
 </div>
 </div>
 <div mat-dialog-actions>
-    <button mat-button  >Save as PDF</button>
+    <button mat-button [swal]="['Oops!', 'This is not implemented yet :/', 'warning']"  >Save as PDF</button>
     <button mat-button (click) = "submitEditIncidentForm()" >Edit</button>
     <button mat-button (click)="onNoClick()">Back</button> 
 </div>

@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>Incident</h2>
+<div mat-dialog-content  >
+<div class = "row dialog">
+   <h5>Transaction Ticket</h5> 
+    <table mat-table [dataSource]="transaction" class="mat-elevation-z4" >
+                        
+            <ng-container matColumnDef="itemID">
+                <th mat-header-cell *matHeaderCellDef> Item ID </th>
+                <td mat-cell *matCellDef="let transaction"> {{transaction.itemID}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="purpose">
+                <th mat-header-cell *matHeaderCellDef> Purpose </th>
+                <td mat-cell *matCellDef="let transaction"> {{transaction.purpose}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateBorrowed">
+                <th mat-header-cell *matHeaderCellDef> Date Borrowed </th>
+                <td mat-cell *matCellDef="let transaction"> {{transaction.dateBorrowed}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+        </table>
+
+</div>
+<div class = "row" >           
+    <div class = "container-fluid">
+        <div class = "row" [formGroup] = "updateItemForm">
+            <div class = "col-6">
+            <label> ID </label> : {{data.bID}} <br>
+            <label> Name </label> : {{data.firstName}} {{data.lastName}}
+            </div>
+            <div class = "col-6" >
+                <mat-form-field>
+                    <mat-label>Item Condition</mat-label>
+                    <mat-select formControlName = "condition">
+                        <mat-option value = "OK">OK</mat-option>
+                        <mat-option value = "For Repair">For Repair</mat-option>
+                        <mat-option value = "For Disposal">For Disposal</mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+            </div>
+        </div>
+        <div class = "row" [formGroup] = "incidentForm">
+            <div class = "col-6">
+                <mat-form-field >
+                <mat-label> Borrower Description </mat-label>
+                <textarea matInput formControlName = "borrowerDescription" > </textarea>
+                </mat-form-field>
+            </div>
+            <div class = "col-6">
+                <mat-form-field >
+                <mat-label> Admin Description </mat-label>
+                <textarea matInput formControlName = "adminDescription" > </textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    
+ 
+
+</div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click) = "submitIncidentForm()" >Submit</button>
+    <button mat-button (click)="onNoClick()">Back</button> 
+</div>
