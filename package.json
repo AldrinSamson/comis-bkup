@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node ./server/app.js",
     "build": "ng build",
     "test": "ng test",
     "test:single-run": "ng test --watch=false",
@@ -13,7 +13,8 @@
     "format:check": "prettier --config ./.prettierrc --list-different \"src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\"",
     "format:fix": "prettier --config ./.prettierrc --write \"src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\"",
     "genpage": "node ./scripts/generatePage",
-    "postgenpage": "ng lint --fix"
+    "postgenpage": "ng lint --fix",
+    "postinstall": "ng build --output-path dist"
   },
   "private": true,
   "dependencies": {
@@ -44,7 +45,11 @@
     "rxjs": "~6.5.2",
     "sweetalert2": "^8.18.4",
     "tslib": "^1.10.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.5.11"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.800.6",

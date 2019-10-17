@@ -1,9 +1,10 @@
 
         <mat-toolbar color="primary" class="mat-elevation-z6" fxLayout fxLayoutGap="16px">
-                <div><button mat-button ><h5>Welcome {{userInfo.class}} {{userInfo.lastName}}</h5></button></div> 
+                <div fxLayoutAlign="right"><button mat-button ><h5>Welcome {{userInfo.class}} {{userInfo.lastName}}</h5></button>
                 <button mat-icon-button (click)="onLogout()">
                     <mat-icon>logout</mat-icon>
                 </button>
+              </div> 
         </mat-toolbar>
     <mat-tab-group mat-align-tabs="center">
         <mat-tab label="Borrow & Return">
