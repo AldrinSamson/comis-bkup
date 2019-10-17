@@ -16,8 +16,6 @@ mongoose.connect(dataBaseConfig.db, {
   }
 )
 
-
-
 const inventoryRoute = require('./routes/inventory.route')
 const inventoryTypeRoute = require('./routes/inventoryType.route')
 const inventorySubTypeRoute = require('./routes/inventorySubType.route')
@@ -45,13 +43,11 @@ app.use('/incident' , incidentRoute)
 app.use('/account' , accountRoute)
 app.use('/audit' , auditRoute)
 
-// const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8000;
 
-// app.listen(port, () => {
-//   console.log('Connected to port ' + port)
-// })
-
-app.listen(8000, () => { console.log('Server is running...') });
+app.listen(port, () => {
+   console.log('Connected to port ' + port)
+})
 
 app.use((req, res, next) => {
   next(createError(404));
