@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, 'dist/comis.version.3')));
+app.use(express.static(path.join(__dirname, '/dist')));
 
 app.use('/inventory', inventoryRoute)
 app.use('/inventoryType', inventoryTypeRoute)
@@ -58,7 +58,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/comis.version.3/index.html'));
+  res.sendFile(path.join(__dirname, '/dist/index.html'));
 });
 
 app.use(function (err, req, res, next) {
