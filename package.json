@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng-serve",
+    "start": "node ./server/app.js",
     "build": "ng build",
     "test": "ng test",
     "test:single-run": "ng test --watch=false",
@@ -13,7 +13,12 @@
     "format:check": "prettier --config ./.prettierrc --list-different \"src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\"",
     "format:fix": "prettier --config ./.prettierrc --write \"src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\"",
     "genpage": "node ./scripts/generatePage",
-    "postgenpage": "ng lint --fix"
+    "postgenpage": "ng lint --fix",
+    "heroku-postbuild": "ng build --prod",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.5.11"
   },
   "private": true,
   "dependencies": {
@@ -48,7 +53,10 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongoose": "^5.5.11"
+    "mongoose": "^5.5.11",
+    "@angular/cli": "^8.0.6",
+    "@angular/compiler-cli": "^8.0.3",
+    "typescript": "~3.4.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.800.6",
@@ -59,6 +67,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "^5.0.1",
+    "enhanced-resolve": "^3.3.0",
     "husky": "^2.7.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
