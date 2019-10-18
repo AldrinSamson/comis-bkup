@@ -4,10 +4,12 @@ import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angu
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 //Service
 import { DataService } from '../../core/services/genericCRUD/data.service';
 import { StorageService } from '../../core/services/storage/storage.service';
+import { AuthService } from '../../auth/auth.service';
 
 //Model
 import { Borrower } from '../../core/models/Borrower';
@@ -42,7 +44,9 @@ export class StaffViewPageComponent implements OnInit {
   constructor(
       public DS: DataService,
       public dialog: MatDialog,
-      private storage: StorageService  
+      private storage: StorageService,
+      private authService: AuthService,
+      private router: Router 
   ) {}
 
   @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
@@ -145,7 +149,9 @@ export class StaffViewPageComponent implements OnInit {
   }
 
   public onLogout() {
-    this.logout.emit();
+    this.authService.logout();
+    this.router.navigate(['login']);
+
   }
 
 }

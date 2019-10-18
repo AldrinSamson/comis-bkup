@@ -4,7 +4,8 @@
 
 export const environment = {
     production: false,
-    serverUrl: 'https://combisys.herokuapp.com'
+    //serverUrl: 'https://combisys.herokuapp.com'
+    serverUrl :'http://localhost:8000/'
 };
 
 /*
