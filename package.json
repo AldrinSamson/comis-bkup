@@ -3,8 +3,8 @@
   "version": "3.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node ./server/app.js",
-    "build": "ng build --output-path dist",
+    "start": "node ./server/app",
+    "build": "ng build --prod --output-path dist",
     "test": "ng test",
     "test:single-run": "ng test --watch=false",
     "lint:check": "ng lint",
