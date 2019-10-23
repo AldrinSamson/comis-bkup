@@ -3,7 +3,7 @@
            
             <mat-form-field >
                 <mat-label> Type </mat-label>
-                <mat-select formControlName = "type" (selectionChange)="readSubType($event)">
+                <mat-select formControlName = "type" >
                     <mat-option *ngFor="let type of types" [value]="type.type">
                     {{type.type}}
                     </mat-option>

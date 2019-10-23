@@ -35,18 +35,3 @@ export class NavToolbarComponent implements OnInit {
     }
 }
 
-@Component ({
-    selector : 'profile-dialog',
-    templateUrl : './dialog/profile-dialog.html'
-})
-
-export class profileDialog {
-
-    constructor (
-        public dialogRef: MatDialogRef<profileDialog>
-    ) {}
-
-    onNoClick(): void {
-        this.dialogRef.close();
-    }
-}
