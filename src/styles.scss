@@ -1,3 +1,5 @@
+// CSS Reset, comment out if not required or using a different module
+@import '~minireset.css/minireset';
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import "~bootstrap/dist/css/bootstrap.css";
 
@@ -11,10 +13,44 @@ body {
     min-height: calc(100vh - 123px);
 }
 
-html {
-    overflow: scroll;
-    overflow-x: hidden;
+// html {
+//     overflow: scroll;
+//     overflow-x: hidden;
+// }
+
+.grid-controls {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    margin: 0 16px 24px;
+
+    igx-switch {
+        margin-top: 24px;
+    }
+
 }
+
+.grid__wrapper {
+    margin: 0 16px;
+}
+
+.header-icon {
+    font-size: 1.4em;
+    width: 1.1em;
+    height: 1.1em;
+    float: right;
+    cursor: pointer;
+}
+
+.header {
+    height: 100%;
+}
+
+.igx-grid__th .title {
+    width: 100%;
+    cursor: auto;
+}
+
 ::-webkit-scrollbar {
     width: 0px; 
     background: transparent; 
@@ -24,3 +60,20 @@ html {
     justify-content: flex-end;
 }
 
+
+@import "~igniteui-angular/lib/core/styles/themes/index";
+// Uncomment the following lines if you want to add a custom palette:
+// $primary: #731963 !default;
+// $secondary: #ce5712 !default;
+// $app-palette: igx-palette($primary, $secondary);
+
+$primary-color: #f96a88; 
+$secondary-color: #545a56; 
+
+$my-color-palette: igx-palette(
+    $primary: $primary-color,
+    $secondary: $secondary-color
+);
+
+@include igx-core();
+@include igx-theme($my-color-palette);

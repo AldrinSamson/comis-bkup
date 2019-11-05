@@ -17,6 +17,7 @@ table {
 textarea {
     width: 300px;
     height: 150px;
+    border-style: outset;
   
 }
 
@@ -31,4 +32,12 @@ textarea {
     margin-right : 40px;
     margin-top: 15px;
   }
+}
+
+
+h3 {
+  margin-top: 0px;
+} 
+h5 {
+ margin-top: 0px;
 } 

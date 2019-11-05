@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>New {{data.class}} </h2>
+<h3 mat-dialog-title>New {{data.class}} </h3>
 <div mat-dialog-content [formGroup] = "addInventoryForm" >
            
             <mat-form-field >
@@ -30,13 +30,18 @@
             </mat-form-field>
             <br>
             <mat-form-field >
+                <mat-label> Donor/Manufacturer </mat-label>
+                <input matInput formControlName = "donor">
+            </mat-form-field>
+            <br>
+            <mat-form-field >
                 <mat-label>Location</mat-label>
                 <input matInput formControlName = "location">
             </mat-form-field>
             <br>
             <mat-form-field>
                 <mat-label>Condition</mat-label>
-                <mat-select formControlName = "condition" >
+                <mat-select formControlName = "condition"  [(ngModel)]="selected" >
                     <mat-option value = "OK">OK</mat-option>
                     <mat-option value = "For Repair">For Repair</mat-option>
                     <mat-option value = "For Disposal">For Disposal</mat-option>

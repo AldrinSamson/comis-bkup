@@ -1,10 +1,12 @@
 <div class="login-page" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="50px">
-    <div class="logo-container" fxFlexAlign="center">
+    <div class="logo-container-ust" fxFlexAlign="center">
         <app-logo2></app-logo2>
     </div>
-    <mat-card fxFlexAlign="center">
+    <mat-card fxFlexAlign="center" class = "login-card" color = "gray">
         <mat-card-title>
-            Conservatory of Music Borrowing & Inventory System
+            <h3>
+            Conservatory of Music's <br> Borrowing & Inventory System
+            </h3>
         </mat-card-title>
         <mat-card-content>
             <form (keyup.enter)="login(email, password)">
@@ -18,7 +20,7 @@
             <mat-error [textContent]="errorMessage"></mat-error>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button color="primary"
+            <button mat-raised-button color="accent"
                     class="login-field" (click)="login(email, password)" type="submit">
                 Login
             </button>

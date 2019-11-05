@@ -10,7 +10,7 @@ import { HttpConfigInterceptor } from './core/services/http/interceptor.service'
 import { CrudServiceModule } from './core/services/genericCRUD/crud-service.module';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-
+import {DatePipe} from '@angular/common';
 
 @NgModule({
     declarations: [AppComponent],
@@ -23,7 +23,6 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
         CrudServiceModule,
         MDBBootstrapModule,
         SweetAlert2Module.forRoot()
-       
     ],
     providers: [
         {
@@ -31,8 +30,10 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
             useClass: HttpConfigInterceptor,
             multi: true,
         },
+        DatePipe
     ],
 
     bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

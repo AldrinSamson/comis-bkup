@@ -10,6 +10,7 @@ let Inventory = new Schema ({
     itemNum: { type: Number },
     name: { type: String },
     description: { type: String },
+    donor :  { type: String },
     location: { type: String },
     condition: { type: String },
     status: {type: String },

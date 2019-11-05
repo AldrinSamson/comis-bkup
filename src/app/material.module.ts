@@ -10,6 +10,7 @@ import {CdkStepperModule} from '@angular/cdk/stepper';
 import {CdkTableModule} from '@angular/cdk/table';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IgxGridModule } from 'igniteui-angular';
 import {
     MatAutocompleteModule,
     MatButtonModule,
@@ -88,7 +89,8 @@ import {
       FormsModule,
       ReactiveFormsModule,
       MatPaginatorModule,
-      FlexLayoutModule 
+      FlexLayoutModule,
+      IgxGridModule
     ],
   
    

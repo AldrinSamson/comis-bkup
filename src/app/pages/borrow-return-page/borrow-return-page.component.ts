@@ -105,6 +105,7 @@ export class BorrowReturnPageComponent implements OnInit {
 @Component({
     selector : 'borrow-dialog',
     templateUrl : './dialog/borrow-dialog.html',
+    styleUrls: ['./borrow-return-page.component.scss'],
 })
 
 export class borrowDialog {
@@ -176,6 +177,7 @@ export class borrowDialog {
 @Component({
     selector : 'return-dialog',
     templateUrl : './dialog/return-dialog.html',
+    styleUrls: ['./borrow-return-page.component.scss'],
 })
 
 export class returnDialog implements OnInit {

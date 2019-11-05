@@ -1,12 +1,13 @@
-<div class = "row">
-    <div class = "col-10"></div>
-    <div class = "col-2">
-    <button mat-icon-button color ="accent" class = "bigButton" [routerLink] = "['inventoryConfig']" ><i class="material-icons">settings_applications</i></button>
-    </div>
+<div class = "counter">
+
+    <button mat-icon-button class="smallButton" color="accent"  style = "float:left;" (click) = "openAddInventoryDialog('Instrument')"><i class="material-icons">
+        add
+    </i></button>
+   
+    <button mat-icon-button color ="accent" class = "bigButton"  style = "float:right;" [routerLink] = "['inventoryConfig']" ><i class="material-icons">settings_applications</i></button>
 </div>
 
-<div class = "row">
-<mat-tab-group class = "card2">
+<!-- <mat-tab-group class = "card2">
   <mat-tab label="Instrument">
       <div class="card">
           <div class="card-header">
@@ -62,7 +63,7 @@
                       <td mat-cell *matCellDef="let instrument"> {{instrument.condition}} </td>
                   </ng-container>
 
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="editInventory(row , 'Instrument')"></tr>
                 </table>
                 <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
@@ -191,5 +192,38 @@
           </div>
       </div>
   </mat-tab>
-</mat-tab-group>
-</div>
+</mat-tab-group> -->
+<!-- <igx-grid #grid1 id="grid1" [data]="inventory" [autoGenerate]="true"></igx-grid> -->
+<div class = "card" width = "100%">
+  <igx-grid #grid1 [data]="inventory" [width]="'100%'" [height]="'100%'" [allowFiltering]="true" [paging]="true" [perPage]="10" [groupingExpressions]='expr' >
+      <igx-column field="itemID" header="Item ID"  >
+      </igx-column>
+      <igx-column field="class" header="Class"  [groupable]="true">
+      </igx-column>
+      <igx-column field="type" header="Type"  [groupable]="true">
+      </igx-column>
+      <igx-column field="subType" header="Sub Type"  [groupable]="true">
+      </igx-column>
+      <igx-column field="name" header="Name" >
+      </igx-column>
+      <igx-column field="description" header="Description">
+      </igx-column>
+      <igx-column field="location" header="Location">
+      </igx-column>
+      <igx-column field="condition" header="Condition"  >
+      </igx-column>
+      <igx-column field="status" header="Status" >
+      </igx-column>
+          <ng-template igxGroupByRow let-groupRow>
+                  <div class="igx-group-label">
+                      <igx-icon fontSet="material" class="igx-group-label__icon">group_work</igx-icon>
+                      <span class="igx-group-label__column-name">
+                      {{ groupRow.expression.fieldName }}:
+                      </span>
+                      <span class="igx-group-label__text">{{  groupRow.value }}</span>
+                      <igx-badge [value]="groupRow.records.length" class='igx-group-label__count-badge'></igx-badge>
+                      <span style ="color:#09f;"> Available : </span><span class="igx-badge__circle igx-badge__circle--default" >{{ countAvailable(groupRow.records)}}</span>
+                  </div>
+              </ng-template>
+      </igx-grid>
+    </div>

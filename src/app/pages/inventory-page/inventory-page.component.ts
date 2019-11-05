@@ -1,8 +1,13 @@
-import { Component, OnInit, Inject, ViewChildren , QueryList } from '@angular/core';
+import { Component, OnInit, Inject, ViewChildren , QueryList , ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
-import {MatPaginator} from '@angular/material/paginator';
+//import {MatPaginator} from '@angular/material/paginator';
+import { DefaultSortingStrategy,
+        IgxGridComponent,
+        ISortingExpression,
+        SortingDirection } from 'igniteui-angular';
+import { DatePipe } from '@angular/common';        
 
 //Service
 import { DataService } from '../../core/services/genericCRUD/data.service'
@@ -32,6 +37,9 @@ export class InventoryPageComponent implements OnInit {
     multimedia : any;
     displayedColumns: string[] = [ 'itemID' ,'type', 'subType' ,'name' , 'description' ,'location', 'condition' ];
     userInfo : any;
+
+    public grid1: IgxGridComponent;
+    public expr: ISortingExpression[];
     
     
     ngOnInit() {
@@ -42,10 +50,18 @@ export class InventoryPageComponent implements OnInit {
     constructor(
         public DS: DataService,
         public dialog: MatDialog,
-        private storage: StorageService
-    ) { }
+        private storage: StorageService,
+        private datePipe: DatePipe
+    ) { 
+        this.expr = [
+            { dir: SortingDirection.Asc, fieldName: "class", ignoreCase: false,
+              strategy: DefaultSortingStrategy.instance() },
+        ];
+    }
 
-    @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+    //@ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+    
+    @ViewChild('grid1', { read: IgxGridComponent , static : false})
     
     async readInventory() {
         const inventoryPromise = this.DS.readPromise(Inventory);
@@ -64,19 +80,27 @@ export class InventoryPageComponent implements OnInit {
             return item.class == 'Multimedia'
         });
 
-        this.instrument = new MatTableDataSource(this.instrument);
-        this.accessory = new MatTableDataSource(this.accessory);
-        this.multimedia = new MatTableDataSource(this.multimedia);
+        // this.instrument = new MatTableDataSource(this.instrument);
+        // this.accessory = new MatTableDataSource(this.accessory);
+        // this.multimedia = new MatTableDataSource(this.multimedia);
 
-        this.instrument.paginator = this.paginator.toArray()[0];
-        this.accessory.paginator = this.paginator.toArray()[1];
-        this.multimedia.paginator = this.paginator.toArray()[2];
+        // this.instrument.paginator = this.paginator.toArray()[0];
+        // this.accessory.paginator = this.paginator.toArray()[1];
+        // this.multimedia.paginator = this.paginator.toArray()[2];
     }
 
-    applyFilter(filterValue: string) {
-        this.instrument.filter = filterValue.trim().toLowerCase();
-        this.accessory.filter = filterValue.trim().toLowerCase();
-      }
+    // applyFilter(filterValue: string) {
+    //     this.instrument.filter = filterValue.trim().toLowerCase();
+    //     this.accessory.filter = filterValue.trim().toLowerCase();
+    // }
+
+    public formatDate(val: Date) {
+        return this.datePipe.transform(val,"dd-MM-yyyy");
+    }
+
+    public countAvailable(values: any[]) {
+        return values.filter((x) => x.status == "OK" && x.condition != "Lost").length;
+    }
     
     // TODO : refractor dialog functions
     openAddInventoryDialog(classs):void {
@@ -92,19 +116,21 @@ export class InventoryPageComponent implements OnInit {
         });
     }
 
-    editInventory(row , classs) {
+    
+
+    editInventory(row) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.data = {
-            class : classs,
-            type : row.type,
-            id : row._id, 
-            itemID : '',
-            subType : '',
-            name: row.name,
-            description : row.description,
-            condition : row.condition,
-            location : row.location,
-            user : this.userInfo.username
+            // class : row.class,
+            // type : row.type,
+            // id : row._id, 
+            // itemID : '',
+            // subType : '',
+            // name: row.name,
+            // description : row.description,
+            // condition : row.condition,
+            // location : row.location,
+            // user : this.userInfo.username
         };
 
         this.dialog.open(editInventoryDialog, dialogConfig).afterClosed().subscribe(result => {
@@ -121,6 +147,7 @@ export class InventoryPageComponent implements OnInit {
 
 export class addInventoryDialog implements OnInit{
 
+    selected = 'OK';
     addInventoryForm : any;
     inventoryAbbv : any;
     inventoryNum : any;
@@ -139,6 +166,7 @@ export class addInventoryDialog implements OnInit{
                 subType : [''],
                 name : [''],
                 description: [''],
+                donor: [''],
                 location: [''],
                 condition : [''],
                 status: [''],
@@ -206,6 +234,7 @@ export class addInventoryDialog implements OnInit{
                 subType : [this.addInventoryForm.value.subType],
                 name : [this.addInventoryForm.value.name],
                 description: [this.addInventoryForm.value.description],
+                donor : [this.addInventoryForm.value.donor],
                 location: [this.addInventoryForm.value.location],
                 condition : [this.addInventoryForm.value.condition],
                 status: ['OK'],
@@ -265,6 +294,7 @@ export class editInventoryDialog implements OnInit {
                 id: [data.id],
                 name : [data.name],
                 description: [data.description],
+                donor: [data.donor],
                 location: [data.location],
                 condition : [data.condition],
                 dateEdited : [new Date()],

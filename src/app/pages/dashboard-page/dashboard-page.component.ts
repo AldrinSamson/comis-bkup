@@ -41,7 +41,13 @@ export class DashboardPageComponent implements OnInit {
 
   public chartOptions: any = {
     responsive: true,
-    size : "Chart"
+    size : "Chart",
+    plugins: {
+      labels: {
+        render: 'percentage',
+        precision: 2
+      }
+    }
   };
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }

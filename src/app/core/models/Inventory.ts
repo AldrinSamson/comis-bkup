@@ -10,6 +10,7 @@ export interface IInventory extends IDataBaseObj {
     itemNum?: number;
     name?: string;
     description?: string;
+    donor?: string;
     location?: string;
     condition?: string;
     status?: string;
@@ -32,6 +33,7 @@ export class Inventory implements IInventory {
     itemNum?: number;
     name?: string;
     description?: string;
+    donor?: string;
     location?: string;
     condition?: string;
     status?: string;
