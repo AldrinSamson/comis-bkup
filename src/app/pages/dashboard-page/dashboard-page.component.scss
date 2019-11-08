@@ -65,6 +65,15 @@
 }
 
 canvas {
-  height: 50px;
-  width: 50px;
+  height: 35vh !important;
+  width: 35vw !important;
+}
+
+h4 {
+  margin-top: 0px;
+}
+
+.pieChart {
+  height:50vh; 
+  width:20vw
 }

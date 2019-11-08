@@ -223,6 +223,7 @@
                       <span class="igx-group-label__text">{{  groupRow.value }}</span>
                       <igx-badge [value]="groupRow.records.length" class='igx-group-label__count-badge'></igx-badge>
                       <span style ="color:#09f;"> Available : </span><span class="igx-badge__circle igx-badge__circle--default" >{{ countAvailable(groupRow.records)}}</span>
+                      <span style ="color:#09f;"> Borrowed : </span><span class="igx-badge__circle igx-badge__circle--default" >{{ countBorrowed(groupRow.records)}}</span>
                   </div>
               </ng-template>
       </igx-grid>

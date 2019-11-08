@@ -17,6 +17,22 @@ const routes: Routes = [
             ),
         data: { title: 'Account Management', isChild: true },
     },
+    {
+        path: 'inventory',
+        loadChildren: () =>
+            import('../inventory-page/inventory-page.module').then(
+                m => m.InventoryPageModule,
+            ),
+        data: { title: 'Inventory Management', isChild: false },
+    },
+    {
+        path: 'borrow-return',
+        loadChildren: () =>
+            import('../borrow-return-page/borrow-return-page.module').then(
+                m => m.BorrowReturnPageModule,
+            ),
+        data: { title: 'Borrow and Return', isChild: false },
+    },
 ];
 
 @NgModule({

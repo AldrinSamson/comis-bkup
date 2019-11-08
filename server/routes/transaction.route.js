@@ -77,6 +77,51 @@ transactionRoute.route('/getByItem/id=:id').get((req, res) => {
   }
 })
 })
+// group n count item
+transactionRoute.route('/frequentItems').get((req, res) => {
+  const aggregatorOpts = [{
+    $group: {
+      _id: "$itemID",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { count : -1 } 
+  },
+  { $limit: 6 } 
+]
+  
+  Transcation.aggregate(aggregatorOpts, (error, data) => {
+    if (error) {
+      return next(error)
+    } else {
+      res.json(data)
+    }
+  })
+})
+
+// group n count item
+transactionRoute.route('/frequentBorrowers').get((req, res) => {
+  const aggregatorOpts = [{
+    $group: {
+      _id: "$borrowerID",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { count : -1 } 
+  },
+  { $limit: 6 } 
+]
+  
+  Transcation.aggregate(aggregatorOpts,(error, data) => {
+    if (error) {
+      return next(error)
+    } else {
+      res.json(data)
+    }
+  })
+})
 // TODO CLEAR BY DATE , CLEAR ALL
 module.exports = transactionRoute;
 

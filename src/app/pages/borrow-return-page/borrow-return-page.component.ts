@@ -88,7 +88,7 @@ export class BorrowReturnPageComponent implements OnInit {
             purpose: '',
             user : this.userInfo.username
         };
-        if(row.status == 'OK'){
+        if(row.status == 'AVAILABLE'){
             this.dialog.open(borrowDialog, dialogConfig).afterClosed().subscribe(result => {
                 this.readInventory()
             });
@@ -225,7 +225,7 @@ export class returnDialog implements OnInit {
     submitReturnForm(){
         const updateItem = {
             id : this.data.id,
-            status : 'OK'
+            status : 'AVAILABLE'
         }
 
         let audit = {
@@ -307,7 +307,7 @@ export class incidentDialog implements OnInit {
         this.updateItemForm = this.fb.group({
             id : [this.data.itemObjectID],
             condition : [''],
-            status : ['OK']
+            status : ['AVAILABLE']
         })
     }
 

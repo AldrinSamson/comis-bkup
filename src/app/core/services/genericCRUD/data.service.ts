@@ -79,12 +79,12 @@ export class DataService {
   }
 
   // READ
-  read<T>(model: T | any, query?: HttpParams | string | any) {
-    this.DR.read(model, query);
+  read<T>(model: T | any,type?: string | any, query?: HttpParams | string | any) {
+    this.DR.read(model,type, query);
   }
 
-  readObs<T>(model: T | any, query?: HttpParams | string | any): Observable<T[]> {
-    return this.DR.readObs(model, query);
+  readObs<T>(model: T | any, type?: string | any, query?: HttpParams | string | any): Observable<T[]> {
+    return this.DR.readObs(model,type, query);
   }
 
   readPromise<T>(model: T | any,type?: string | any, query?: HttpParams | string | any): Promise<T | any> {

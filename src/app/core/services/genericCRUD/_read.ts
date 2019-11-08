@@ -24,17 +24,24 @@ export class DataRead {
      * @param model The interface / class to construct the query against and build response objects from
      * @param query A limiting query to apply to the get. Expects an object of type URLSearchParams to append to the read, or a simple string
      */
-    read<T>(model: T | any, query?: HttpParams | string | any) {
+    read<T>(model: T | any,type?: string | any, query?: HttpParams | string | any) {
         this.DS.loadingMap[model.tableName] = true;
 
+       let url : any;
         const httpOpts = Object.assign({}, this.DS.httpOptions);
 
-        if (query) {
-            httpOpts.params = this.createSearchParams(query);
+        if (type) {
+            url = `${this.DS.endpoint}${model.tableName}/${type}`;
+            if (query){
+                httpOpts.params = this.createSearchParams(query);
+                url = `${this.DS.endpoint}${model.tableName}/${type}/${httpOpts.params}`;
+            }
+        } else {
+            url = `${this.DS.endpoint}${model.tableName}`;
         }
 
-        const url = `${this.DS.endpoint}${model.tableName}`;
-        this.http.get<any[]>(url, httpOpts)
+       
+        this.http.get<any[]>(url)
             .subscribe(
                 res => {
                     this.cacheAndNotifyRead(model, res);
@@ -47,17 +54,24 @@ export class DataRead {
             );
     }
 
-    readObs<T>(model: T | any, query?: HttpParams | string | any): Observable<T[]> {
+    readObs<T>(model: T | any,type?: string | any, query?: HttpParams | string | any): Observable<T[]> {
         this.DS.loadingMap[model.tableName] = true;
 
         const httpOpts = Object.assign({}, this.DS.httpOptions);
+        let url;
 
-        if (query) {
-            httpOpts.params = this.createSearchParams(query);
+        if (type) {
+            url = `${this.DS.endpoint}${model.tableName}/${type}`;
+            if (query){
+                httpOpts.params = this.createSearchParams(query);
+                url = `${this.DS.endpoint}${model.tableName}/${type}/${httpOpts.params}`;
+            }
+        } else {
+            url = `${this.DS.endpoint}${model.tableName}`;
         }
 
-        const url = `${this.DS.endpoint}${model.tableName}`;
-        return this.http.get<T[]>(url, httpOpts)
+        
+        return this.http.get<T[]>(url)
             .pipe(
                 catchError(handleHttpError),
                 tap((res: T[]) => {
@@ -72,9 +86,12 @@ export class DataRead {
         const httpOpts = Object.assign({}, this.DS.httpOptions);
         let url : any ;
 
-        if (query) {
-            httpOpts.params = this.createSearchParams(query);
-            url = `${this.DS.endpoint}${model.tableName}/${type}/${httpOpts.params}`;
+        if (type) {
+            url = `${this.DS.endpoint}${model.tableName}/${type}`;
+            if (query){
+                httpOpts.params = this.createSearchParams(query);
+                url = `${this.DS.endpoint}${model.tableName}/${type}/${httpOpts.params}`;
+            }
         } else {
             url = `${this.DS.endpoint}${model.tableName}`;
         }

@@ -99,8 +99,13 @@ export class InventoryPageComponent implements OnInit {
     }
 
     public countAvailable(values: any[]) {
-        return values.filter((x) => x.status == "OK" && x.condition != "Lost").length;
+        return values.filter((x) => x.status == "AVAILABLE" && (x.condition != "Lost" || x.condition != "For Disposal") ).length;
     }
+    
+    public countBorrowed(values: any[]) {
+        return values.filter((x) => x.status == "BORROWED" ).length;
+    }
+
     
     // TODO : refractor dialog functions
     openAddInventoryDialog(classs):void {
@@ -148,6 +153,7 @@ export class InventoryPageComponent implements OnInit {
 export class addInventoryDialog implements OnInit{
 
     selected = 'OK';
+    selected2 = '';
     addInventoryForm : any;
     inventoryAbbv : any;
     inventoryNum : any;
@@ -161,7 +167,7 @@ export class addInventoryDialog implements OnInit{
         @Inject(MAT_DIALOG_DATA) public data: any
         ) {
             this.addInventoryForm = this.fb.group({
-                class: [data.class],
+                class: [''],
                 type : [''],
                 subType : [''],
                 name : [''],
@@ -178,12 +184,11 @@ export class addInventoryDialog implements OnInit{
         }
     
     ngOnInit() {
-        this.readType();
     }
 
-    async readType(){
+    async readType(classs){
 
-        const query = "class=" + this.data.class;
+        const query = "class=" + classs.value;
         const type = "get";
         const promise = this.DS.readPromise(InventoryType , type , query);
         const [res] = await Promise.all([promise]);
@@ -192,7 +197,7 @@ export class addInventoryDialog implements OnInit{
     
     async readSubType(type){
 
-        const query = "class=" + this.data.class + "&type=" + type.value; 
+        const query = "class=" + this.selected2 + "&type=" + type.value; 
         const types = "get";
         const promise = this.DS.readPromise(InventorySubType , types , query);
         const [res] = await Promise.all([promise]);
@@ -237,7 +242,7 @@ export class addInventoryDialog implements OnInit{
                 donor : [this.addInventoryForm.value.donor],
                 location: [this.addInventoryForm.value.location],
                 condition : [this.addInventoryForm.value.condition],
-                status: ['OK'],
+                status: ['AVAILABLE'],
                 dateAdded : [new Date()],
                 dateEdited : [''],
                 addedBy : [this.data.user],

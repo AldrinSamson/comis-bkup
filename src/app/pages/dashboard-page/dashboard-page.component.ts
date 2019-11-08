@@ -1,6 +1,17 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { DataService } from '../../core/services/genericCRUD/data.service'
+import { Chart } from 'chart.js';
+import { forkJoin, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import 'chartjs-plugin-labels'; 
 
+import { Inventory } from '../../core/models/Inventory';
+import { Transaction } from '../../core/models/Transaction';
+import { borrowDialog } from '../staff-view-page/staff-view-page.component';
+
+Chart.defaults.global.defaultFontStyle = 'Bold'
+Chart.defaults.global.defaultFontSize = 16
+Chart.defaults.global.defaultFontColor = 'Black'
 
 export interface DialogData {
   animal: string;
@@ -14,41 +25,139 @@ export interface DialogData {
 })
 export class DashboardPageComponent implements OnInit {
 
-    ngOnInit() {
-       
-    } 
-    
-  public chartType: string = 'pie';
-  public chartDatasetsItem: Array<any> = [
-    { data: [50, 10, 70, 27 , 15], label: 'Items' }
-  ];
+  
+  private unsub: Subject<void> = new Subject<any>();
+  inventory : Inventory[] = [];
+  FI : any;
+  FB : any;
+  FIcount : any;
+  FIlabel : any;
+  FBcount : any;
+  FBlabel : any;
+  FIchart = [];
+  FBchart = [];
 
-  public chartLabelsItem: Array<any> = ['Violin', 'Cello', 'Caddy', 'Coat', 'Drum'];
+  constructor(
+        public DS: DataService,
+    ) { }
 
-  public chartDatasetsBorrower: Array<any> = [
-    { data: [22, 5, 9, 13 , 11], label: 'Borrower' }
-  ];
 
-  public chartLabelsBorrower: Array<any> = ['John Doe', 'Edward Elric', 'Winry Rockbell', 'Van Hohenheim', 'Scar Face'];
+  ngOnInit() {
+      this.readInventory();
+      this.readFI();
+      this.readFB();  
+  }  
 
-  public chartColors: Array<any> = [
-    {
-      backgroundColor: ['#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
-      hoverBackgroundColor: ['#FF5A5E', '#5AD3D1', '#FFC870', '#A8B3C5', '#616774'],
-      borderWidth: 2,
-    }
-  ];
+  formatDate(date) {
+    var monthNames = [
+      "January", "February", "March",
+      "April", "May", "June", "July",
+      "August", "September", "October",
+      "November", "December"
+    ];
+  
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+  
+    return day + ' ' + monthNames[monthIndex] + ' ' + year;
+  }
 
-  public chartOptions: any = {
-    responsive: true,
-    size : "Chart",
-    plugins: {
-      labels: {
-        render: 'percentage',
-        precision: 2
-      }
-    }
-  };
+  dateToday = this.formatDate(new Date());
+
+  readFI(){
+    const type = "frequentItems";
+    const FIObs = this.DS.readObs(Transaction , type);
+    forkJoin([FIObs])
+      .pipe(takeUntil(this.unsub))
+      .subscribe(
+      (res: any) => {
+        this.FI = res[0];
+        this.FIcount = this.FI.map(a => a.count);
+        this.FIlabel = this.FI.map(a => a._id);
+
+        this.FIchart.push(new Chart('FIchart', {
+          type : 'pie',
+          data : {
+            labels :this.FIlabel,
+            datasets : [{
+              data: this.FIcount,
+              label : "Items",
+              backgroundColor: ['#ffb8c9', '#f5c4e5', '#e4d1f9', '#d5dfff', '#ceeaff', '#d1f3ff'],
+              hoverBackgroundColor: ['#ffb8c9', '#f5c4e5', '#e4d1f9', '#d5dfff', '#ceeaff', '#d1f3ff'],
+              borderWidth: 2,
+            }] 
+          },
+          options : {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+      
+            }
+          }
+      }))
+    },
+      err => console.error(err)
+    );
+  }
+
+  readFB(){
+    const type = "frequentBorrowers";
+    const FBObs = this.DS.readObs(Transaction , type);
+    forkJoin([FBObs])
+      .pipe(takeUntil(this.unsub))
+      .subscribe(
+      (res: any) => {
+        this.FB = res[0];
+        this.FBcount = this.FB.map(a => a.count);
+        this.FBlabel = this.FB.map(a => a._id);
+
+        this.FBchart.push(new Chart('FBchart', {
+          type : 'pie',
+          data : {
+            labels :this.FBlabel,
+            
+            datasets : [{
+              data: this.FBcount,
+              label : "Items",
+              backgroundColor:['#ffb8c9', '#f5c4e5', '#e4d1f9', '#d5dfff', '#ceeaff', '#d1f3ff'],
+              hoverBackgroundColor: ['#ffb8c9', '#f5c4e5', '#e4d1f9', '#d5dfff', '#ceeaff', '#d1f3ff'],
+              borderWidth: 2,
+            }] 
+          },
+          options : {
+            responsive: true, 
+            
+            maintainAspectRatio: false,
+            plugins: {
+        
+            }
+          }
+      }))
+    },
+      err => console.error(err)
+    );
+  }
+
+  
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
+
+
+   async readInventory() {
+        const inventoryPromise = this.DS.readPromise(Inventory);   
+        const [inventoryRes] = await Promise.all([inventoryPromise]);
+        this.inventory = inventoryRes;
+   }
+
+   public countBorrowed(values: any[]) {
+        return values.filter((x) => x.status == "BORROWED" ).length;
+   }
+
+   public countIssues(values: any[]) {
+    return values.filter((x) => x.condition != "OK" ).length;
+  }
+
+
+
 }

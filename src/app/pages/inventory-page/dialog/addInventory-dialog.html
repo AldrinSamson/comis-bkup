@@ -1,7 +1,16 @@
-<h3 mat-dialog-title>New {{data.class}} </h3>
+<h3 mat-dialog-title>New Item </h3>
 <div mat-dialog-content [formGroup] = "addInventoryForm" >
            
-            <mat-form-field >
+            <mat-form-field>
+                <mat-label>Class</mat-label>
+                <mat-select formControlName = "class" (selectionChange)="readType($event)" [(ngModel)]="selected2">
+                    <mat-option value = "Instrument">Instrument</mat-option>
+                    <mat-option value = "Accessory">Accessory</mat-option>
+                    <mat-option value = "Multimedia">Multimedia</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
                 <mat-label>Type</mat-label>
                 <mat-select formControlName = "type" (selectionChange)="readSubType($event)">
                     <mat-option *ngFor="let type of types" [value]="type.type">
