@@ -111,7 +111,51 @@ transactionRoute.route('/frequentBorrowers').get((req, res) => {
   {
     $sort: { count : -1 } 
   },
-  { $limit: 6 } 
+  { $limit: 6 },
+  {$lookup:
+
+    {
+
+        from: 'borrower',
+
+        localField: '_id',
+
+        foreignField: 'bID',
+
+        as: 'bDetails'
+
+    }
+
+}
+   
+]
+  
+  Transcation.aggregate(aggregatorOpts,(error, data) => {
+    if (error) {
+      return next(error)
+    } else {
+      res.json(data)
+    }
+  })
+})
+
+transactionRoute.route('/testjoin').get((req, res) => {
+  const aggregatorOpts = [ 
+    {$lookup:
+
+    {
+
+        from: 'borrower',
+
+        localField: 'borrowerID',
+
+        foreignField: 'bID',
+
+        as: 'bDetails'
+
+    }
+
+}
 ]
   
   Transcation.aggregate(aggregatorOpts,(error, data) => {

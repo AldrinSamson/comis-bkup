@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { DataService } from '../../core/services/genericCRUD/data.service'
 import { Chart } from 'chart.js';
-import { forkJoin, Subject } from 'rxjs';
+import { forkJoin, Subject, concat } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import 'chartjs-plugin-labels'; 
 
@@ -33,7 +33,6 @@ export class DashboardPageComponent implements OnInit {
   FIcount : any;
   FIlabel : any;
   FBcount : any;
-  FBlabel : any;
   FIchart = [];
   FBchart = [];
 
@@ -108,14 +107,23 @@ export class DashboardPageComponent implements OnInit {
       .pipe(takeUntil(this.unsub))
       .subscribe(
       (res: any) => {
+
+        let bDetails ;
+        let name = [];
+
         this.FB = res[0];
         this.FBcount = this.FB.map(a => a.count);
-        this.FBlabel = this.FB.map(a => a._id);
+        bDetails = this.FB.map(a => a.bDetails);
+      
+        Object.keys(bDetails).forEach(function (item) {
+          const value = bDetails[item][0].firstName + " " + bDetails[item][0].lastName;
+          name.push(value);
+        })
 
         this.FBchart.push(new Chart('FBchart', {
           type : 'pie',
           data : {
-            labels :this.FBlabel,
+            labels : name,
             
             datasets : [{
               data: this.FBcount,

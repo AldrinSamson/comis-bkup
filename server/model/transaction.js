@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let Transaction = new Schema ({
     
-    borrowerID : { type: Number }, // also bID
+    borrowerID : { type: String }, // also bID
     itemID : { type: String },
     purpose : { type: String },
     dateBorrowed : { type: Date },

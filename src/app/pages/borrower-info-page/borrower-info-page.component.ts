@@ -16,6 +16,7 @@ import { Incident } from '../../core/models/Incident';
 })
 export class BorrowerInfoPageComponent implements OnInit {
 
+    
     borrower : any;
     borrowerRaw : Borrower[] = [];
   
@@ -81,6 +82,7 @@ export class BorrowerInfoPageComponent implements OnInit {
 export class addBorrowerDialog {
 
     addBorrowerForm : any;
+    checked = false;
 
     constructor(
         public DS: DataService,
@@ -97,10 +99,13 @@ export class addBorrowerDialog {
         }
 
     submitAddBorrowerForm() {
+        
+       
         if (this.addBorrowerForm.valid){
             this.DS.createPromise(Borrower, this.addBorrowerForm.value);
             this.dialogRef.close();
-        }  
+        } 
+         
     }
 
     onNoClick(): void {

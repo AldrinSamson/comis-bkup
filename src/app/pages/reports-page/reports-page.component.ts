@@ -4,6 +4,9 @@ import { MatTableDataSource } from '@angular/material';
 import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators , FormControl } from '@angular/forms';
 import {MatPaginator} from '@angular/material/paginator';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 import { Transaction } from '../../core/models/Transaction';
 import { Incident } from '../../core/models/Incident';
@@ -30,6 +33,7 @@ export class ReportsPageComponent implements OnInit {
     constructor(
       public DS: DataService,
       public dialog: MatDialog,
+      public pdfmake
     ) { }
 
     @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
@@ -77,6 +81,11 @@ export class ReportsPageComponent implements OnInit {
         this.readIncident()
       });
     }
+
+    // generatePdf(){
+    //   const documentDefinition = { content: 'This is an sample PDF printed with pdfMake' };
+    //   pdfmake.createPdf(documentDefinition).open();
+    // }
   
   }
   

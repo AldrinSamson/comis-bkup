@@ -52,6 +52,7 @@
     "minireset.css": "~0.0.4",
     "mongoose": "^5.5.11",
     "npm-registry-client": "^8.6.0",
+    "pdfmake": "^0.1.62",
     "popper.js": "^1.15.0",
     "resize-observer-polyfill": "^1.5.1",
     "rxjs": "~6.5.2",

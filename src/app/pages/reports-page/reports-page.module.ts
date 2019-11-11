@@ -5,6 +5,8 @@ import { ReportsPageRoutingModule } from './reports-page-routing.module';
 import { ReportsPageComponent , editIncidentDialog } from './reports-page.component';
 import { MaterialModule } from '../../material.module'; 
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { pdfmake } from 'pdfmake';
+
 
 @NgModule({
     entryComponents: [
@@ -14,6 +16,6 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
         ReportsPageComponent,
         editIncidentDialog
     ],
-    imports: [CommonModule, ReportsPageRoutingModule , MaterialModule ,  SweetAlert2Module.forRoot()],
+    imports: [CommonModule, ReportsPageRoutingModule , MaterialModule ,  SweetAlert2Module.forRoot() , pdfmake],
 })
 export class ReportsPageModule {}
