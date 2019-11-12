@@ -26,6 +26,14 @@ const routes: Routes = [
         data: { title: 'Inventory Management', isChild: false },
     },
     {
+        path: 'reports',
+        loadChildren: () =>
+            import('../reports-page/reports-page.module').then(
+                m => m.ReportsPageModule,
+            ),
+        data: { title: 'Reports Management', isChild: false },
+    },
+    {
         path: 'borrow-return',
         loadChildren: () =>
             import('../borrow-return-page/borrow-return-page.module').then(

@@ -7,7 +7,7 @@
                             <div class="card-icon">
                                 <i class="material-icons">unarchive</i>
                             </div>
-                           <button mat-button class="card-category" [routerLink] = "['borrow-return']" ><h4>Items Borrowed</h4></button>
+                           <button mat-button class="card-category" [routerLink] = "['reports']" ><h4>Items Borrowed</h4></button>
                             <h3 class="card-title"> {{countBorrowed(inventory)}}
                             </h3>
                         </div>
@@ -22,7 +22,7 @@
                             <div class="card-icon">
                                 <i class="material-icons">broken_image</i>
                             </div>
-                            <button mat-button class="card-category" [routerLink] = "['inventory']" ><h4>Items with Issues</h4></button>
+                            <button mat-button class="card-category" [routerLink] = "['reports']" ><h4>Items with Issues</h4></button>
                             <h3 class="card-title">{{countIssues(inventory)}}</h3>
                         </div>
                         <div class="card-footer text-muted">
