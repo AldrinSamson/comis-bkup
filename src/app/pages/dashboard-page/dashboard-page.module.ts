@@ -5,10 +5,11 @@ import { ChartsModule, WavesModule } from 'angular-bootstrap-md';
 
 
 import { DashboardPageRoutingModule } from './dashboard-page-routing.module';
-import { DashboardPageComponent } from './dashboard-page.component';
+import { DashboardPageComponent , borrowedDialog , issueDialog} from './dashboard-page.component';
 
 @NgModule({
-    declarations: [DashboardPageComponent],
+    entryComponents : [borrowedDialog , issueDialog],
+    declarations: [DashboardPageComponent , borrowedDialog , issueDialog],
     imports: [CommonModule, DashboardPageRoutingModule , MaterialModule ,ChartsModule, WavesModule  ],
 })
 export class DashboardPageModule {}

@@ -195,7 +195,7 @@
 </mat-tab-group> -->
 <!-- <igx-grid #grid1 id="grid1" [data]="inventory" [autoGenerate]="true"></igx-grid> -->
 <div class = "card" width = "100%">
-  <igx-grid #grid1 [data]="inventory" [width]="'100%'" [height]="'100%'" [allowFiltering]="true" [paging]="true" [perPage]="10" [groupingExpressions]='expr' >
+  <igx-grid #grid1 [data]="inventory" [width]="'100%'" [height]="'100%'" [allowFiltering]="true" [paging]="true" [perPage]="10" [groupingExpressions]='expr' (onSelection) = 'editInventory()'  >
       <igx-column field="itemID" header="Item ID"  >
       </igx-column>
       <igx-column field="class" header="Class"  [groupable]="true">
@@ -222,8 +222,8 @@
                       </span>
                       <span class="igx-group-label__text">{{  groupRow.value }}</span>
                       <igx-badge [value]="groupRow.records.length" class='igx-group-label__count-badge'></igx-badge>
-                      <span style ="color:#09f;"> Available : </span><span class="igx-badge__circle igx-badge__circle--default" >{{ countAvailable(groupRow.records)}}</span>
                       <span style ="color:#09f;"> Borrowed : </span><span class="igx-badge__circle igx-badge__circle--default" >{{ countBorrowed(groupRow.records)}}</span>
+                      <span style ="color:#09f;"> Available : </span><span class="igx-badge__circle igx-badge__circle--default" >{{ countAvailable(groupRow.records)}}</span>
                   </div>
               </ng-template>
       </igx-grid>

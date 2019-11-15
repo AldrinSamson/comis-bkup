@@ -4,6 +4,8 @@ import { Chart } from 'chart.js';
 import { forkJoin, Subject, concat } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import 'chartjs-plugin-labels'; 
+import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material';
 
 import { Inventory } from '../../core/models/Inventory';
 import { Transaction } from '../../core/models/Transaction';
@@ -38,6 +40,7 @@ export class DashboardPageComponent implements OnInit {
 
   constructor(
         public DS: DataService,
+        public dialog: MatDialog
     ) { }
 
 
@@ -166,6 +169,120 @@ export class DashboardPageComponent implements OnInit {
     return values.filter((x) => x.condition != "OK" ).length;
   }
 
+  openIssuesDialog():void {
+        
+    const dialogConfig = new MatDialogConfig();
+
+    this.dialog.open(issueDialog, dialogConfig).afterClosed().subscribe(result => {
+    });
+  }
+
+  openBorrowedDialog():void {
+        
+    const dialogConfig = new MatDialogConfig();
+
+    this.dialog.open(borrowedDialog, dialogConfig).afterClosed().subscribe(result => {
+    });
+  }
+
+
+
+}
+
+@Component({
+  selector : 'borrowed-dialog',
+  templateUrl : './dialog/borrowed-dialog.html',
+  styleUrls: ['./dashboard-page.component.scss'],
+})
+
+export class borrowedDialog implements OnInit {
+
+
+  transactions : any;
+  filtered : any;
+  displayedColumns : string[] = ['itemID', 'dateBorrowed' , 'name']; 
+
+  constructor(
+    public DS: DataService,
+    public dialog : MatDialog,
+    public dialogRef: MatDialogRef<borrowedDialog>,
+    ) {
+
+    }
+  
+  
+  ngOnInit(){
+    this.readBorrower();
+  };
+
+  async readBorrower(){
+
+    let  type = "getBorrowed" 
+
+    const inventoryPromise = this.DS.readPromise(Transaction , type);   
+    const [inventoryRes] = await Promise.all([inventoryPromise]);
+    this.transactions = inventoryRes;
+
+    this.filtered = this.transactions.filter(function(item){
+      return item.dateReturned == null; 
+    });
+
+    console.log(this.filtered);
+
+
+
+
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+    }
+
+
+
+}
+
+@Component({
+  selector : 'issue-dialog',
+  templateUrl : './dialog/issue-dialog.html',
+  styleUrls: ['./dashboard-page.component.scss'],
+})
+
+export class issueDialog implements OnInit {
+
+  inventory : Inventory[] = []
+  issues : any;
+  displayedColumns: string[] = [ 'itemID'  ,'name' , 'condition' ];
+
+  constructor(
+    public DS: DataService,
+    public dialog : MatDialog,
+    public dialogRef: MatDialogRef<issueDialog>,
+    ) {
+
+    }
+  
+  
+  ngOnInit(){
+    this.readInventory();
+  };
+
+  async readInventory() {
+    const inventoryPromise = this.DS.readPromise(Inventory);   
+    const [inventoryRes] = await Promise.all([inventoryPromise]);
+    this.inventory = inventoryRes;
+
+    this.issues = this.inventory.filter(function(item){
+      return item.condition != 'OK' 
+    });
+
+    this.issues = new MatTableDataSource(this.issues)
+
+}
+
+onNoClick(): void {
+  this.dialogRef.close();
+  }
 
 
 }

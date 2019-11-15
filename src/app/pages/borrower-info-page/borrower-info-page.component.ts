@@ -84,6 +84,11 @@ export class addBorrowerDialog {
     addBorrowerForm : any;
     checked = false;
 
+    disabledAgreement: boolean = true;
+  changeCheck(event){
+    this.disabledAgreement = !event.checked;
+  }
+
     constructor(
         public DS: DataService,
         public dialogRef: MatDialogRef<addBorrowerDialog>,

@@ -4,6 +4,8 @@ import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angu
 import { FormBuilder, Validators } from '@angular/forms';
 import {MatPaginator} from '@angular/material/paginator';
 import swal from 'sweetalert2';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 //Service
 import { DataService } from '../../core/services/genericCRUD/data.service'
@@ -108,9 +110,12 @@ export class BorrowReturnPageComponent implements OnInit {
     styleUrls: ['./borrow-return-page.component.scss'],
 })
 
-export class borrowDialog {
+export class borrowDialog implements OnInit {
 
+    borrower :any;
     borrowForm : any;
+    options : any;
+    filteredOptions: Observable<string[]>;
 
     constructor(
         public DS: DataService,
@@ -129,6 +134,30 @@ export class borrowDialog {
                 hasIncident: ['']
             })
         }
+    ngOnInit() {
+        this.getBorrowers();
+        // this.filteredOptions = this.borrowForm.valueChanges
+        //     .pipe(
+        //      startWith(''),
+        //      map(value => this._filter(value))
+        // );
+
+    }
+
+    async getBorrowers() {
+        const readPromise = this.DS.readPromise(Borrower);
+        const [readRes] = await Promise.all([readPromise]);
+        this.borrower = readRes;
+
+        this.options = this.borrower.borrowerID
+    }
+
+
+    // private _filter(value: string): string[] {
+    // const filterValue = value.toLowerCase();
+
+    // return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    // }
     
     async submitBorrowForm(){
         let borrowerFormInfo : any;
@@ -348,6 +377,10 @@ export class incidentDialog implements OnInit {
             dateReturned : new Date,
             receivedBy : 'bandoy',
             hasIncident :'1'
+        }
+
+        if (this.updateItemForm.value.condition == 'Lost') {
+            this.updateItemForm.value.status = 'NOT AVAILABLE';
         }
 
         if (this.incidentForm.valid){

@@ -72,4 +72,6 @@ inventoryRoute.route('/delete/:id').delete((req, res, next) => {
 
 
 
+
+
 module.exports = inventoryRoute;

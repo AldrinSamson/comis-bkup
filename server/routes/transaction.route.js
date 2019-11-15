@@ -139,7 +139,7 @@ transactionRoute.route('/frequentBorrowers').get((req, res) => {
   })
 })
 
-transactionRoute.route('/testjoin').get((req, res) => {
+transactionRoute.route('/getBorrowed').get((req, res) => {
   const aggregatorOpts = [ 
     {$lookup:
 
@@ -153,7 +153,7 @@ transactionRoute.route('/testjoin').get((req, res) => {
 
         as: 'bDetails'
 
-    }
+    },
 
 }
 ]

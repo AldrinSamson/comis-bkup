@@ -123,8 +123,10 @@ export class InventoryPageComponent implements OnInit {
 
     
 
-    editInventory(row) {
+    editInventory() {
         const dialogConfig = new MatDialogConfig();
+        let id = this.grid1.getSelectedData();
+        console.log(id);
         dialogConfig.data = {
             // class : row.class,
             // type : row.type,

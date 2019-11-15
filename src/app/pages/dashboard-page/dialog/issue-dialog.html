@@ -1,0 +1,29 @@
+<h3 mat-dialog-title>Items with Issues</h3>
+<div mat-dialog-content >
+           
+    <table mat-table [dataSource]="issues" class="mat-elevation-z8">
+                        
+        <ng-container matColumnDef="itemID">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let issues"> {{issues.itemID}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let issues"> {{issues.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="condition">
+            <th mat-header-cell *matHeaderCellDef> Condition </th>
+            <td mat-cell *matCellDef="let issues"> {{issues.condition}} </td>
+        </ng-container>
+
+            
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>    
+</div>
+<div mat-dialog-actions>
+    <button mat-button [routerLink] = "['reports']" >Go to Reports</button>
+    <button mat-button (click)="onNoClick()">Back</button> 
+</div>
