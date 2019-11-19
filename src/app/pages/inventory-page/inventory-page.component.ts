@@ -1,12 +1,13 @@
 import { Component, OnInit, Inject, ViewChildren , QueryList , ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef ,MatDialogConfig ,MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
 //import {MatPaginator} from '@angular/material/paginator';
 import { DefaultSortingStrategy,
         IgxGridComponent,
         ISortingExpression,
         SortingDirection } from 'igniteui-angular';
+        
 import { DatePipe } from '@angular/common';        
 
 //Service
@@ -38,8 +39,10 @@ export class InventoryPageComponent implements OnInit {
     displayedColumns: string[] = [ 'itemID' ,'type', 'subType' ,'name' , 'description' ,'location', 'condition' ];
     userInfo : any;
 
+    @ViewChild('grid1', { read: IgxGridComponent , static : true})
     public grid1: IgxGridComponent;
     public expr: ISortingExpression[];
+    public data;
     
     
     ngOnInit() {
@@ -58,10 +61,6 @@ export class InventoryPageComponent implements OnInit {
               strategy: DefaultSortingStrategy.instance() },
         ];
     }
-
-    //@ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
-    
-    @ViewChild('grid1', { read: IgxGridComponent , static : false})
     
     async readInventory() {
         const inventoryPromise = this.DS.readPromise(Inventory);
@@ -121,28 +120,20 @@ export class InventoryPageComponent implements OnInit {
         });
     }
 
-    
-
     editInventory() {
-        const dialogConfig = new MatDialogConfig();
-        let id = this.grid1.getSelectedData();
-        console.log(id);
-        dialogConfig.data = {
-            // class : row.class,
-            // type : row.type,
-            // id : row._id, 
-            // itemID : '',
-            // subType : '',
-            // name: row.name,
-            // description : row.description,
-            // condition : row.condition,
-            // location : row.location,
-            // user : this.userInfo.username
-        };
-
-        this.dialog.open(editInventoryDialog, dialogConfig).afterClosed().subscribe(result => {
-            this.readInventory()
-        });
+        this.data =  this.grid1.getSelectedData();
+        if (this.data[0].itemID != null) {
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.data = {
+                itemID : this.data[0].itemID,
+                user : this.userInfo.username
+            };
+    
+            this.dialog.open(editInventoryDialog, dialogConfig).afterClosed().subscribe(result => {
+                this.readInventory()
+            });
+        }
+       
     }
 
 }
@@ -298,26 +289,40 @@ export class editInventoryDialog implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any
         ) {
             this.editInventoryForm = this.fb.group({
-                id: [data.id],
-                name : [data.name],
-                description: [data.description],
-                donor: [data.donor],
-                location: [data.location],
-                condition : [data.condition],
-                dateEdited : [new Date()],
-                editedBy : [this.data.user],
-            })
+            id: [''],
+            name : [''],
+            description: [''],
+            donor: [''],
+            location: [''],
+            condition : [''],
+            status : [''],
+            dateEdited : [new Date()],
+            editedBy : [this.data.user],
+        })
+            
     }
 
     async readSingleInventory() {
         
-        let getIDquery = 'id='+this.data.id ;
+        let getIDquery = 'id='+this.data.itemID ;
         let type = 'get';
         const inventoryPromise = this.DS.readPromise(Inventory ,type, getIDquery);
         const [inventoryRes] = await Promise.all([inventoryPromise]);
         this.singleInventorySource = inventoryRes;
-        this.data.itemID = this.singleInventorySource.itemID
-        this.data.subType = this.singleInventorySource.subType
+        //this.data.itemID = this.singleInventorySource.itemID
+        this.data.subType = this.singleInventorySource.subType;
+
+        this.editInventoryForm = this.fb.group({
+            id: [this.singleInventorySource._id],
+            name : [this.singleInventorySource.name],
+            description: [this.singleInventorySource.description],
+            donor: [this.singleInventorySource.donor],
+            location: [this.singleInventorySource.location],
+            condition : [this.singleInventorySource.condition],
+            status : [this.singleInventorySource.status],
+            dateEdited : [new Date()],
+            editedBy : [this.data.user],
+        })
 
         this.readItemTransactions(this.singleInventorySource.itemID);
     }

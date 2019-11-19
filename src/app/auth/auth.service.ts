@@ -39,7 +39,7 @@ export class AuthService extends CrudService {
                     title: 'Error!',
                     text: 'Incorrect Credentials',
                     type: 'error',
-                    confirmButtonText: 'K.'
+                    confirmButtonText: 'OK'
                   })
             }else {
 

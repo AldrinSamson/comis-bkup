@@ -195,10 +195,10 @@
 </mat-tab-group> -->
 <!-- <igx-grid #grid1 id="grid1" [data]="inventory" [autoGenerate]="true"></igx-grid> -->
 <div class = "card" width = "100%">
-  <igx-grid #grid1 [data]="inventory" [width]="'100%'" [height]="'100%'" [allowFiltering]="true" [paging]="true" [perPage]="10" [groupingExpressions]='expr' (onSelection) = 'editInventory()'  >
-      <igx-column field="itemID" header="Item ID"  >
+  <igx-grid #grid1 [data]="inventory" [width]="'100%'" [height]="'100%'" [allowFiltering]="true" [paging]="true" [perPage]="10" [groupingExpressions]='expr'  (onSelection) = 'editInventory()' >
+      <igx-column field="itemID" header="Item ID" (onSelection) = 'editInventory()'  >
       </igx-column>
-      <igx-column field="class" header="Class"  [groupable]="true">
+      <igx-column field="class" header="Class"  [groupable]="true" >
       </igx-column>
       <igx-column field="type" header="Type"  [groupable]="true">
       </igx-column>

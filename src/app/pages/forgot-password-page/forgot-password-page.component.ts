@@ -49,7 +49,7 @@ export class ForgotPasswordPageComponent implements OnInit {
         title: 'Oh oh',
         text: 'Username does not exist' ,
         type: 'warning',
-        confirmButtonText: 'K.'
+        confirmButtonText: 'OK'
       })
     }else {
       const dialogConfig = new MatDialogConfig();
@@ -105,7 +105,7 @@ export class questionDialog {
                 title: 'Oh oh',
                 text: 'Wrong Answers' ,
                 type: 'warning',
-                confirmButtonText: 'K.'
+                confirmButtonText: 'OK'
               })
             }else {
               const dialogConfig = new MatDialogConfig();
@@ -162,7 +162,7 @@ export class resetDialog {
             title: 'Success!',
             text: 'Password Reset!' ,
             type: 'success',
-            confirmButtonText: 'K.'
+            confirmButtonText: 'OK'
           })
          
       }

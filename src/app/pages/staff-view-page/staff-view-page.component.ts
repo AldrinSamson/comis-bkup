@@ -322,7 +322,7 @@ export class borrowDialog {
               title: 'Error!',
               text: 'Student ID ' + borrowerFormInfo.borrowerID +' not found' ,
               type: 'warning',
-              confirmButtonText: 'K.'
+              confirmButtonText: 'OK'
             })
       }else {
           if (this.borrowForm.valid){

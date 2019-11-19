@@ -16,7 +16,7 @@ inventoryRoute.route('/').get((req, res) => {
   })
 // get one
 inventoryRoute.route('/get/id=:id').get((req, res) => {
-  Inventory.findById(req.params.id, (error, data) => {
+  Inventory.findOne({ itemID: req.params.id },{},{ }, (error, data) => {
     if (error) {
       return next(error)
     } else {

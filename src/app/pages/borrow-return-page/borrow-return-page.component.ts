@@ -185,7 +185,7 @@ export class borrowDialog implements OnInit {
                 title: 'Error!',
                 text: 'Student ID ' + borrowerFormInfo.borrowerID +' not found' ,
                 type: 'warning',
-                confirmButtonText: 'K.'
+                confirmButtonText: 'OK'
               })
         }else {
             if (this.borrowForm.valid){
@@ -288,6 +288,7 @@ export class returnDialog implements OnInit {
         this.dialog.open(incidentDialog, dialogConfigIncident).afterClosed().subscribe(result => {
             
         });
+        this.dialogRef.close(returnDialog);
        
     }
 

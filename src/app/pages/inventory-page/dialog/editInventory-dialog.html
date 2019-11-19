@@ -24,7 +24,19 @@
             <br>
             <mat-form-field>
                 <mat-label>Condition</mat-label>
-                <input matInput formControlName = "condition" value = {{data.condition}}>
+                <mat-select formControlName = "condition"  >
+                    <mat-option value = "OK">OK</mat-option>
+                    <mat-option value = "For Repair">For Repair</mat-option>
+                    <mat-option value = "For Disposal">For Disposal</mat-option>
+                    <mat-option value = "Lost">Lost</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Status</mat-label>
+                <mat-select formControlName = "status" >
+                    <mat-option value = "AVAILABLE">Available</mat-option>
+                    <mat-option value = "NOT AVAILABLE">Not Available</mat-option>
+                </mat-select>
             </mat-form-field>
         </div>
         <div class = "col-9 dialog">
