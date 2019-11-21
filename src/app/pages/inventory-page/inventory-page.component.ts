@@ -272,6 +272,7 @@ export class editInventoryDialog implements OnInit {
     editInventoryForm : any;
     singleInventorySource : any;
     singleInventory  = new MatTableDataSource<Inventory>(this.singleInventorySource);
+    show: boolean = true;
 
     iTransactionRaw: Transaction[] = [];
     iTransaction: any;
@@ -311,6 +312,10 @@ export class editInventoryDialog implements OnInit {
         this.singleInventorySource = inventoryRes;
         //this.data.itemID = this.singleInventorySource.itemID
         this.data.subType = this.singleInventorySource.subType;
+
+        if (this.singleInventorySource.status == "BORROWED" ) {
+            this.show = false;
+        }
 
         this.editInventoryForm = this.fb.group({
             id: [this.singleInventorySource._id],

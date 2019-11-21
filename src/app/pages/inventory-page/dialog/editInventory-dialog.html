@@ -22,6 +22,7 @@
                 <input matInput formControlName = "location" value = {{data.location}}>
             </mat-form-field>
             <br>
+            <div *ngIf="show" >
             <mat-form-field>
                 <mat-label>Condition</mat-label>
                 <mat-select formControlName = "condition"  >
@@ -31,6 +32,8 @@
                     <mat-option value = "Lost">Lost</mat-option>
                 </mat-select>
             </mat-form-field>
+            </div>
+            <div *ngIf="show" >
             <mat-form-field>
                 <mat-label>Status</mat-label>
                 <mat-select formControlName = "status" >
@@ -38,6 +41,7 @@
                     <mat-option value = "NOT AVAILABLE">Not Available</mat-option>
                 </mat-select>
             </mat-form-field>
+            </div>
         </div>
         <div class = "col-9 dialog">
             <h5>Transactions</h5>
